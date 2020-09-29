@@ -1,1 +1,2 @@
-# 4WBB0
+# PocketAlert
+PocketAlert is the companion app to the fall detector device.
