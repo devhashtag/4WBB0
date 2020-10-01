@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PocketAlert</string>
+    <string name="app_name">FallDetectorApp</string>
     <string name="darkModeCheckBox">Dark mode</string>
 
 </resources>
