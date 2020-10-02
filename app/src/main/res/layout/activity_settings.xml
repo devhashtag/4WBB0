@@ -7,18 +7,4 @@
     android:background="@color/mainBackground"
     tools:context=".SettingsActivity">
 
-    <CheckBox
-        android:id="@+id/darkmodeCheckbox"
-        android:layout_width="220dp"
-        android:layout_height="105dp"
-        android:layout_marginTop="44dp"
-        android:button="@color/colorAccent"
-        android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-        android:text="@string/darkModeCheckBox"
-        android:textSize="36sp"
-        android:theme="@style/Checkbox"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
