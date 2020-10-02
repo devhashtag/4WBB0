@@ -11,22 +11,77 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Connect New Device"
-        android:textSize="36sp"
+        android:text="@string/connect_new_device"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView2"
+    <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_height="128dp"
+        android:layout_marginStart="@dimen/big_padding"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:text="@string/connect_device_instructions"
+        android:layout_marginEnd="@dimen/big_padding"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/connectTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/connectTitle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/connectInstructions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/connect_device_instructions" />
+        </LinearLayout>
+    </ScrollView>
+
+    <EditText
+        android:id="@+id/connectInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="@dimen/big_padding"
+        android:ems="10"
+        android:hint="@string/identification_number"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        android:importantForAutofill="no" />
+
+    <Button
+        android:id="@+id/cancelConnectButton"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        android:backgroundTint="#F44336"
+        android:onClick="onCancel"
+        android:text="@android:string/cancel"
+        app:layout_constraintEnd_toStartOf="@+id/connectButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/connectInput" />
+
+    <Button
+        android:id="@+id/connectButton"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#4CAF50"
+        android:onClick="onConnect"
+        android:text="@string/connect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cancelConnectButton"
+        app:layout_constraintTop_toBottomOf="@+id/connectInput" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

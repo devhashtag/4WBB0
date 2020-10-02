@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">PocketAlert</string>
-    <string name="connect_device_instructions">Connecting a fall detector to this app allows you to get notified when the wearer of the fall detector falls or presses the emergency button.\nTo connect the device with the app you need to enter the fall detector\'s identification code into the text box below. You can obtain the ID code by ???holding down the false alarm button on the fall detector for 10 seconds. The speaker will then read out the ID code.??? When this number has been written down, press "Connect device". You will see a new device has been added. To add personal details of the wearer of the device, click on the newly added device and then on the pencil.</string>
+    <string name="connect_device_instructions">Connecting a fall detector to this app allows you to get notified when the wearer of the fall detector falls or presses the emergency button.\nTo connect the device with the app you need to enter the fall detector\'s identification code into the text box below. You can obtain the ID code by ???holding down the false alarm button on the fall detector for 10 seconds. The speaker will then read out the ID code.??? When this number has been written down, press \"Connect\". You will see a new device has been added. To add personal details of the wearer of the device, click on the newly added device and then on the pencil.</string>
+    <string name="add_user">add user</string>
+    <string name="empty_not_saved">Device not saved because it is empty.</string>
+    <string name="connect_new_device">Connect New Device</string>
+    <string name="identification_number">Identification number</string>
+    <string name="connect">Connect</string>
+    <string name="no_name">No Name</string>
 </resources>

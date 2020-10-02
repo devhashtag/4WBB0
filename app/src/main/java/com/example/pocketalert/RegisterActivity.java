@@ -1,14 +1,40 @@
 package com.example.pocketalert;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
-
 public class RegisterActivity extends AppCompatActivity {
+
+    public static final String EXTRA_REPLY = "com.example.android.wordlistsql.REPLY";
+
+    private EditText idInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        idInput = findViewById(R.id.connectInput);
+    }
+
+    public void onConnect(View view) {
+        Intent replyIntent = new Intent();
+        String idStr = idInput.getText().toString();
+        if (idStr.length() > 0) {
+            replyIntent.putExtra(EXTRA_REPLY, Integer.parseInt(idStr));
+            setResult(RESULT_OK, replyIntent);
+        } else {
+            setResult(RESULT_CANCELED, replyIntent);
+        }
+
+        finish();
+    }
+
+    public void onCancel(View view) {
+        finish();
     }
 }
