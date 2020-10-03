@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    public static final String EXTRA_REPLY = "com.example.android.wordlistsql.REPLY";
+    public static final String EXTRA_REPLY = "com.pocketalert.RegisterActivity.REPLY";
 
     private EditText idInput;
 
@@ -34,7 +34,9 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 
-    public void onCancel(View view) {
+    public void onCancelConnect(View view) {
+        Intent replyIntent = new Intent();
+        setResult(RESULT_CANCELED, replyIntent);
         finish();
     }
 }

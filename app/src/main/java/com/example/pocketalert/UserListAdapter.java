@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
 
     private final LayoutInflater inflater;
     private List<User> users; // Cached copy of users
+
     UserListAdapter(Context context) {
         inflater = LayoutInflater.from(context);
     }
@@ -32,10 +34,11 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         if (users != null) {
             User current = users.get(position);
-            holder.userItemView.setText(current.getName());
+            holder.userView.setText(current.getName());
+            holder.editButton.setText((Integer.toString(current.getId())));
         } else {
-            // Covers the case of data not being ready yet.
-            holder.userItemView.setText(R.string.no_name);
+            // Covers the case of data not being entered yet.
+            holder.userView.setText(R.string.enter_name);
         }
     }
 
@@ -53,12 +56,14 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
         else return 0;
     }
 
-    class UserViewHolder extends RecyclerView.ViewHolder {
-        private final TextView userItemView;
+    static class UserViewHolder extends RecyclerView.ViewHolder {
+        private final TextView userView;
+        private final Button editButton;
 
         private UserViewHolder(View itemView) {
             super(itemView);
-            userItemView = itemView.findViewById(R.id.userView);
+            userView = itemView.findViewById(R.id.userView);
+            editButton = itemView.findViewById(R.id.viewUserButton);
         }
     }
 }

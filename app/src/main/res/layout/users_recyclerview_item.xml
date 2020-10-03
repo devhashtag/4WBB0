@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -9,7 +10,7 @@
         android:id="@+id/moveUserUpButton"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:background="#FFFFFF"
+        android:background="#00FFFFFF"
         android:drawableStart="@android:drawable/arrow_up_float"
         app:layout_constraintBottom_toTopOf="@+id/moveUserDownButton"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +33,7 @@
         android:id="@+id/moveUserDownButton"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:background="#FFFFFF"
+        android:background="#00FFFFFF"
         android:drawableStart="@android:drawable/arrow_down_float"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,9 +44,21 @@
         android:id="@+id/deleteButton"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:background="#FFFFFF"
+        android:background="#00FFFFFF"
         android:drawableEnd="@android:drawable/ic_menu_delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/viewUserButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#99F44336"
+        android:onClick="viewUser"
+        android:textColor="#00BCD4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/userView"
+        app:layout_constraintStart_toStartOf="@+id/userView"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
