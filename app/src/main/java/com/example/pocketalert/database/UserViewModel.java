@@ -26,4 +26,16 @@ public class UserViewModel extends AndroidViewModel {
     public void insert(User user) {
         repository.insert(user);
     }
+
+    public List<User> getUser(String device_id) {
+        return repository.getUser(device_id);
+    }
+
+    public void delete(User user) {
+        repository.delete(user);
+    }
+
+    public void deleteAll() {
+        repository.deleteAll();
+    }
 }

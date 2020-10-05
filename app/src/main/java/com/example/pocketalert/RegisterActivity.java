@@ -23,9 +23,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void onConnect(View view) {
         Intent replyIntent = new Intent();
-        String idStr = idInput.getText().toString();
-        if (idStr.length() > 0) {
-            replyIntent.putExtra(EXTRA_REPLY, Integer.parseInt(idStr));
+        String id = idInput.getText().toString();
+        if (id.length() > 0) {
+            replyIntent.putExtra(EXTRA_REPLY, id);
             setResult(RESULT_OK, replyIntent);
         } else {
             setResult(RESULT_CANCELED, replyIntent);

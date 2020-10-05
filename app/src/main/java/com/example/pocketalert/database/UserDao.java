@@ -25,6 +25,9 @@ public interface UserDao {
     @Query("DELETE FROM user_table")
     void deleteAll();
 
-    @Query("SELECT * from user_table")
+    @Query("SELECT * FROM user_table")
     LiveData<List<User>> getAllUsers();
+
+    @Query("SELECT * FROM user_table WHERE id = :device_id")
+    List<User> getUser(String device_id);
 }

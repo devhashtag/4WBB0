@@ -34,11 +34,12 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         if (users != null) {
             User current = users.get(position);
-            holder.userView.setText(current.getName());
-            holder.editButton.setText((Integer.toString(current.getId())));
-        } else {
-            // Covers the case of data not being entered yet.
+            String id = current.getId();
             holder.userView.setText(R.string.enter_name);
+            holder.editButton.setText(id);
+            holder.deleteButton.setText(id);
+            holder.moveUpButton.setText(id);
+            holder.moveDownButton.setText(id);
         }
     }
 
@@ -59,11 +60,17 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
     static class UserViewHolder extends RecyclerView.ViewHolder {
         private final TextView userView;
         private final Button editButton;
+        private final Button deleteButton;
+        private final Button moveUpButton;
+        private final Button moveDownButton;
 
         private UserViewHolder(View itemView) {
             super(itemView);
             userView = itemView.findViewById(R.id.userView);
             editButton = itemView.findViewById(R.id.viewUserButton);
+            deleteButton = itemView.findViewById(R.id.deleteButton);
+            moveUpButton = itemView.findViewById(R.id.moveUserUpButton);
+            moveDownButton = itemView.findViewById(R.id.moveUserDownButton);
         }
     }
 }

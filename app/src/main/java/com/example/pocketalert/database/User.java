@@ -8,7 +8,8 @@ import androidx.room.PrimaryKey;
 public class User {
 
     @PrimaryKey
-    private int id;
+    @NonNull
+    private String id;
 
     @NonNull
     private String name;
@@ -25,20 +26,21 @@ public class User {
     @NonNull
     private String birthday;
 
-    public User(int id) {
+    public User(@NonNull String id) {
         this.id = id;
-        this.name = "<Enter a name>";
+        this.name = "";
         this.address = "";
         this.phone = "";
         this.email = "";
         this.birthday = "";
     }
 
-    public int getId() {
+    @NonNull
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 
@@ -85,5 +87,17 @@ public class User {
 
     public void setBirthday(@NonNull String birthday) {
         this.birthday = birthday;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", birthday='" + birthday + '\'' +
+                '}';
     }
 }

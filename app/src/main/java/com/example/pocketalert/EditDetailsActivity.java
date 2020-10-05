@@ -26,10 +26,6 @@ public class EditDetailsActivity extends AppCompatActivity {
         phone = findViewById(R.id.phoneInput);
         email = findViewById(R.id.emailInput);
         birthday = findViewById(R.id.bdayInput);
-
-        Bundle bundle = getIntent().getExtras();
-        String idStr = bundle.getString("idStr");
-        id.setText(idStr);
     }
 
     public void onSaveDetails(View view) {

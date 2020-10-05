@@ -12,31 +12,53 @@ import static com.example.pocketalert.MainActivity.EDIT_DETAILS_ACTIVITY_REQUEST
 
 public class DetailActivity extends AppCompatActivity {
 
-    private int id;
-    private TextView idView, nameView, addressView, phoneView, emailView, bdayView;
+    String[] userData;
+    private String id, name, address, phone, email, birthday;
+    private TextView idView, nameView, addressView, phoneView, emailView, birthdayView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        idView = findViewById(R.id.idDetail);
-        nameView = findViewById(R.id.nameDetail);
-        addressView = findViewById(R.id.addressDetail);
-        phoneView = findViewById(R.id.phoneDetail);
-        emailView = findViewById(R.id.emailDetail);
-        bdayView = findViewById(R.id.bdayDetail);
-
         Bundle b = getIntent().getExtras();
         if (b != null) {
-            id = b.getInt("id");
+            userData = b.getStringArray("userData");
         } else {
             Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show();
             finish();
         }
 
-        idView.setText(Integer.toString(id));
+        assignValues();
+        findViews();
+        setTextViews();
+    }
 
+    private void assignValues() {
+        id = userData[0];
+        name = userData[1];
+        address = userData[2];
+        phone = userData[3];
+        email = userData[4];
+        birthday = userData[5];
+    }
+
+    private void findViews() {
+        idView = findViewById(R.id.idDetail);
+        nameView = findViewById(R.id.nameDetail);
+        addressView = findViewById(R.id.addressDetail);
+        phoneView = findViewById(R.id.phoneDetail);
+        emailView = findViewById(R.id.emailDetail);
+        birthdayView = findViewById(R.id.bdayDetail);
+    }
+
+    private void setTextViews() {
+        idView.setText(id);
+        nameView.setText(name);
+        addressView.setText(address);
+        phoneView.setText(phone);
+        emailView.setText(email);
+        birthdayView.setText(birthday);
     }
 
     public void onEdit(View view) {
