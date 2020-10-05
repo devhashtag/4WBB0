@@ -54,11 +54,11 @@ public class DetailActivity extends AppCompatActivity {
 
     private void setTextViews() {
         idView.setText(id);
-        nameView.setText(name);
-        addressView.setText(address);
-        phoneView.setText(phone);
-        emailView.setText(email);
-        birthdayView.setText(birthday);
+        nameView.setText(name.length() > 0 ? name : "Name");
+        addressView.setText(address.length() > 0 ? name : "Address");
+        phoneView.setText(phone.length() > 0 ? name : "Phone");
+        emailView.setText(email.length() > 0 ? name : "Email");
+        birthdayView.setText(birthday.length() > 0 ? name : "Birthday");
     }
 
     public void onEdit(View view) {
