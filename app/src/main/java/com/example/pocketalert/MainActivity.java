@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,6 +15,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.preference.PreferenceManager;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -25,9 +31,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
     public static boolean vibrationEnabled = true;
-    Button vibrationButton;
+    public SwitchPrefence  settings = new SwitchPrefence();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,30 +44,11 @@ public class MainActivity extends AppCompatActivity {
         // Pair the xml with the mainactivity
         setContentView(R.layout.activity_main);
 
-        // Find the multiple Buttons
-        vibrationButton = findViewById(R.id.button);
-
-        //Initiate the multiple portrait modes
-        com.example.pocketalert.ActivityHelper.initialize(this);
-
-        // Vibrate the device if the setting is enabled
-        vibrationButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (vibrationEnabled) {
-                    Vibrator vibration = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                    // Vibrate for 500 milliseconds
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        vibration.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-                    } else {
-                        //deprecated in API 26
-                        vibration.vibrate(500);
-                    }
-                }
-            }
-        });
-
     }
-
+    private void Load_setting(){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean check_night = sp.getBoolean("darkmode",false);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -84,13 +73,50 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(settingsIntent);
                 return true;
             case R.id.itemTwo:
-                Toast.makeText(this,"Item 2 Selected",Toast.LENGTH_SHORT);
                 return true;
             case R.id.itemThree:
-                Toast.makeText(this,"Item 3 Selected",Toast.LENGTH_SHORT);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    public void setDarkMode(boolean darkModeSetting){
+        if (darkModeSetting) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+    }
+
+    private void load_Setting(){
+        // Get the shared preferences
+        SharedPreferences appSettingPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Set the dark mode according to the set mode
+        setDarkMode(appSettingPrefs.getBoolean("darkmode",true));
+
+        setOrientationMode(Objects.requireNonNull(appSettingPrefs.getString("Orientation", "2")));
+    }
+
+    public void setOrientationMode(String Orientation) {
+        // Sets the current Orientation mode under the index of Rotation
+        switch (Orientation) {
+            case "1":
+                this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                break;
+            case "2":
+                this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                break;
+            case "3":
+                this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                break;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        load_Setting();
+        super.onResume();
     }
 }

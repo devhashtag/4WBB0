@@ -3,6 +3,9 @@ package com.example.pocketalert;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.preference.Preference;
+
+
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,11 +17,8 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Change portrait mode
-        ActivityHelper.initialize(this);
         setContentView(R.layout.settings_activity);
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.settings21,new SwitchPrefence()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.settings21,new SwitchPrefence()).commit();
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
