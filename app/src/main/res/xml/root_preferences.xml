@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/mainBackground">
+
+    <PreferenceCategory android:title="@string/messages_header">
+
+        <EditTextPreference
+            android:key="signature"
+            android:title="@string/your_information" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Enable Dark Mode">
+
+        <SwitchPreference
+            android:id="@+id/darkmodeSwitchPreference"
+            android:button="@null"
+            android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+            android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+            android:key="darkmode"
+            android:defaultValue="false"
+            android:text="@string/darkModeSwitchPreference"
+            android:title="@string/darkModeSwitchPreference" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Screen Orientation">
+
+        <ListPreference
+            android:entries="@array/items_name"
+            android:entryValues="@array/items_value"
+            android:key="Orientation"
+            android:defaultValue="2"
+            android:title="Orientation" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Notification Settings">
+
+        <SwitchPreference
+            android:id="@+id/vibrationSwitchPreference"
+            android:defaultValue="true"
+            android:button="@null"
+            android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+            android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+            android:key="VibrationSwitchPreference"
+            android:summaryOff="The device will not vibrate once an alert comes in"
+            android:summaryOn="The device will vibrate once an alert comes in"
+            android:title="@string/vibrationSwitchPreference" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
