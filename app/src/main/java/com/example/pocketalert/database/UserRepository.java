@@ -39,12 +39,22 @@ class UserRepository {
 
     List<User> getUser(String id) {
         final ArrayList<User>[] user = new ArrayList[1];
-        UserRoomDatabase.databaseWriteExecutor.execute(() -> user[0] = (ArrayList<User>) userDao.getUser(id));
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        final boolean[] threadDone = {false};
+
+        UserRoomDatabase.databaseWriteExecutor.execute(() -> {
+            user[0] = (ArrayList<User>) userDao.getUser(id);
+            threadDone[0] = true;
+        });
+
+        // wait for thread above to finish
+        while (!threadDone[0]) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
         return user[0];
     }
 }
