@@ -25,8 +25,11 @@ import com.example.pocketalert.database.UserViewModel;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+
+    // Request codes
     public static final int REGISTER_ACTIVITY_REQUEST_CODE = 1;
     public static final int EDIT_DETAILS_ACTIVITY_REQUEST_CODE = 2;
+
     public static boolean vibrationEnabled = true;
     public SwitchPreference settings = new SwitchPreference();
     private UserViewModel userViewModel;
@@ -34,10 +37,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Pair the xml with the mainactivity
         setContentView(R.layout.activity_main);
 
+        // created the recycler view to show the list of all connected users.
         RecyclerView recyclerView = findViewById(R.id.usersRecyclerView);
         final UserListAdapter adapter = new UserListAdapter(this);
         recyclerView.setAdapter(adapter);
@@ -49,49 +51,71 @@ public class MainActivity extends AppCompatActivity {
         userViewModel.getAllUsers().observe(this, adapter::setUsers);
     }
 
+    /**
+     * When another Activity returns a result, this is where that result gets processed.
+     *
+     * @param requestCode The request code that was used when the activity was started.
+     * @param resultCode  The result code return by the activity.
+     * @param data        The Intent data the activity return.
+     */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REGISTER_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             // Adds a new user to the database
-            String id = data.getStringExtra(RegisterActivity.EXTRA_REPLY);
-            User user = new User(id == null ? "0" : id);
-            userViewModel.insert(user);
+            String id = data.getStringExtra(RegisterActivity.REGISTER_ACTIVITY_REPLY);
+            if (id != null) {
+                User user = new User(id);
+                userViewModel.insert(user);
+            } else {
+                Toast.makeText(getApplicationContext(), R.string.data_not_saved, Toast.LENGTH_SHORT).show();
+            }
         } else if (requestCode == REGISTER_ACTIVITY_REQUEST_CODE) {
             // Device connection canceled
             Toast.makeText(getApplicationContext(), R.string.data_not_saved, Toast.LENGTH_SHORT).show();
         }
     }
 
+    /**
+     * When the FAB with the plus is clicked, go to the RegisterActivity.
+     */
     public void addDevice(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivityForResult(intent, REGISTER_ACTIVITY_REQUEST_CODE);
     }
 
+    /**
+     * When the name of one of the users is pressed, go to the DetailActivity with the details of that user.
+     */
     public void viewUser(View view) {
         Intent intent = new Intent(this, DetailActivity.class);
         Button viewButton = (Button) view;
-        intent.putExtra("userData", compileUserData(viewButton.getText().toString()));
+        putExtrasDetails(intent, viewButton.getText().toString());
         startActivity(intent);
     }
 
-    private String[] compileUserData(String id) {
-        String[] userData = new String[6];
-
-        User user = userViewModel.getUser(id).get(0);
-        userData[0] = id;
-        userData[1] = user.getName();
-        userData[2] = user.getAddress();
-        userData[3] = user.getPhone();
-        userData[4] = user.getEmail();
-        userData[5] = user.getBirthday();
-
-        return userData;
+    /**
+     * Puts the details of the user with the specified ID into the specified Intent.
+     *
+     * @param intent The intent to add the user's details to in the extras.
+     * @param id     The ID of the user who's details should be put in the intent's extras.
+     */
+    private void putExtrasDetails(Intent intent, String id) {
+        User user = userViewModel.getUser(id);
+        intent.putExtra("id", id);
+        intent.putExtra("name", user.getName());
+        intent.putExtra("address", user.getAddress());
+        intent.putExtra("phone", user.getPhone());
+        intent.putExtra("email", user.getEmail());
+        intent.putExtra("birthday", user.getBirthday());
     }
 
+    /**
+     * When the delete button next to a user/device is pressed, that device gets removed from the database.
+     */
     public void deleteUser(View view) {
         Button deleteButton = (Button) view;
-        userViewModel.delete(userViewModel.getUser(deleteButton.getText().toString()).get(0));
+        userViewModel.deleteById(deleteButton.getText().toString());
 
     }
 

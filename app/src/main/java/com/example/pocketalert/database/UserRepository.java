@@ -37,9 +37,9 @@ class UserRepository {
         UserRoomDatabase.databaseWriteExecutor.execute(() -> userDao.insert(user));
     }
 
-    List<User> getUser(String device_id) {
+    List<User> getUser(String id) {
         final ArrayList<User>[] user = new ArrayList[1];
-        UserRoomDatabase.databaseWriteExecutor.execute(() -> user[0] = (ArrayList<User>) userDao.getUser(device_id));
+        UserRoomDatabase.databaseWriteExecutor.execute(() -> user[0] = (ArrayList<User>) userDao.getUser(id));
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {

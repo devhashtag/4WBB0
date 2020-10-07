@@ -12,7 +12,6 @@ import static com.example.pocketalert.MainActivity.EDIT_DETAILS_ACTIVITY_REQUEST
 
 public class DetailActivity extends AppCompatActivity {
 
-    String[] userData;
     private String id, name, address, phone, email, birthday;
     private TextView idView, nameView, addressView, phoneView, emailView, birthdayView;
 
@@ -23,26 +22,33 @@ public class DetailActivity extends AppCompatActivity {
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
-            userData = b.getStringArray("userData");
+            assignValues(b);
         } else {
             Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show();
             finish();
         }
 
-        assignValues();
         findViews();
         setTextViews();
     }
 
-    private void assignValues() {
-        id = userData[0];
-        name = userData[1];
-        address = userData[2];
-        phone = userData[3];
-        email = userData[4];
-        birthday = userData[5];
+    /**
+     * Assigns the extras in bundle to the instance variables.
+     *
+     * @param bundle The Bundle of the extras that were sent with the new Intent.
+     */
+    private void assignValues(Bundle bundle) {
+        id = bundle.getString("id");
+        name = bundle.getString("name");
+        address = bundle.getString("address");
+        phone = bundle.getString("phone");
+        email = bundle.getString("email");
+        birthday = bundle.getString("birthday");
     }
 
+    /**
+     * Finds the TextViews in this activity.
+     */
     private void findViews() {
         idView = findViewById(R.id.idDetail);
         nameView = findViewById(R.id.nameDetail);
@@ -52,15 +58,21 @@ public class DetailActivity extends AppCompatActivity {
         birthdayView = findViewById(R.id.bdayDetail);
     }
 
+    /**
+     * Sets the TextViews to the the value stored in the instance variables. Unless the instance variable is "", then a place holder String is assigned.
+     */
     private void setTextViews() {
         idView.setText(id);
         nameView.setText(name.length() > 0 ? name : "Name");
-        addressView.setText(address.length() > 0 ? name : "Address");
-        phoneView.setText(phone.length() > 0 ? name : "Phone");
-        emailView.setText(email.length() > 0 ? name : "Email");
-        birthdayView.setText(birthday.length() > 0 ? name : "Birthday");
+        addressView.setText(address.length() > 0 ? address : "Address");
+        phoneView.setText(phone.length() > 0 ? phone : "Phone");
+        emailView.setText(email.length() > 0 ? email : "Email");
+        birthdayView.setText(birthday.length() > 0 ? birthday : "Birthday");
     }
 
+    /**
+     * When the edit button is pressed, go to the EditDetailsActivity.
+     */
     public void onEdit(View view) {
         Intent intent = new Intent(this, EditDetailsActivity.class);
         startActivityForResult(intent, EDIT_DETAILS_ACTIVITY_REQUEST_CODE);
