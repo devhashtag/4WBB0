@@ -67,15 +67,12 @@ public class SwitchPrefence extends PreferenceFragmentCompat {
             switch (Orientation){
                 case "1":
                     getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-                    Objects.requireNonNull(findPreference("Orientation")).setSummary("Auto mode");
                     break;
                 case "2":
                     getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                    Objects.requireNonNull(findPreference("Orientation")).setSummary("Portrait mode");
                     break;
                 case"3":
                     getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                    Objects.requireNonNull(findPreference("Orientation")).setSummary("Landscape");
                     break;
             }
         }
