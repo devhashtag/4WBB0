@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mainBackground"
     tools:context=".RegisterActivity">
 
     <TextView
@@ -12,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/connect_new_device"
+        android:textColor="@color/mainText"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +40,8 @@
                 android:id="@+id/connectInstructions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/connect_device_instructions" />
+                android:text="@string/connect_device_instructions"
+                android:textColor="@color/mainText" />
         </LinearLayout>
     </ScrollView>
 
@@ -51,11 +54,14 @@
         android:layout_marginEnd="@dimen/big_padding"
         android:ems="10"
         android:hint="@string/identification_number"
+        android:importantForAutofill="no"
         android:inputType="number"
+        android:shadowColor="@color/textAlt"
+        android:textColor="@color/mainText"
+        android:textColorHint="@color/textAlt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
-        android:importantForAutofill="no" />
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
     <Button
         android:id="@+id/cancelConnectButton"
@@ -66,6 +72,7 @@
         android:backgroundTint="@color/red_button"
         android:onClick="onCancelConnect"
         android:text="@android:string/cancel"
+        android:textColor="@color/mainText"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/connectButton"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,6 +88,7 @@
         android:backgroundTint="@color/green_button"
         android:onClick="onConnect"
         android:text="@string/connect"
+        android:textColor="@color/mainText"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cancelConnectButton"
