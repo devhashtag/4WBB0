@@ -1,25 +1,16 @@
 package com.example.pocketalert;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
-import java.util.Objects;
-
-
 // This class is used to make the SwitchPreferences function and take values
-public class SwitchPrefence extends PreferenceFragmentCompat {
+public class SwitchPreference extends PreferenceFragmentCompat {
 
     // Make variables for the various functions in the settings
     SharedPreferences appSettingPrefs;
@@ -50,66 +41,70 @@ public class SwitchPrefence extends PreferenceFragmentCompat {
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(listener);
     }
 
-    public void setDarkMode(boolean darkModeSetting){
+    public void setDarkMode(boolean darkModeSetting) {
         if (darkModeSetting) {
             darkModeEnabled = true;
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
-        else{
+        } else {
             darkModeEnabled = false;
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
-    public void setOrientationMode(String Orientation){
 
+    public void setOrientationMode(String Orientation) {
         // Sets the current Orientation mode under the index of Rotation
-        if(getActivity() != null){
-            switch (Orientation){
-                case "1":
-                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-                    break;
-                case "2":
-                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                    break;
-                case"3":
-                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                    break;
+        if (getActivity() != null) {
+            try {
+                switch (Orientation) {
+                    case "1":
+                        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                        findPreference("Orientation").setSummary("Auto mode");
+                        break;
+                    case "2":
+                        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                        findPreference("Orientation").setSummary("Portrait mode");
+                        break;
+                    case "3":
+                        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                        findPreference("Orientation").setSummary("Landscape");
+                        break;
+                }
+            } catch (NullPointerException e) {
+                Log.e("SwitchPreference", e.toString());
             }
         }
     }
-    private void load_Settings(){
+
+    private void load_Settings() {
         // Get the shared preferences
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             appSettingPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
             // Set the dark mode according to the set mode
-            setDarkMode(appSettingPrefs.getBoolean("darkmode",true));
+            setDarkMode(appSettingPrefs.getBoolean("darkmode", true));
 
             //
-            setOrientationMode(appSettingPrefs.getString("Orientation","2"));
+            setOrientationMode(appSettingPrefs.getString("Orientation", "2"));
 
 
             // Add a Listener for the values
-            listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-                public void onSharedPreferenceChanged(SharedPreferences appSettingPrefs, String key) {
-                    Log.d("abcdefg",key);
-                    switch (key) {
-                        // If dark mode is called, the settings will be changed in such a way that the background changes
-                        case "darkmode":
-                            setDarkMode(appSettingPrefs.getBoolean(key, false));
-                            break;
-                        case "VibrationSwitchPreference":
-                            MainActivity.vibrationEnabled = appSettingPrefs.getBoolean(key, true);
-                            break;
-                        case "Orientation":
-                            Log.d("joehoe",String.valueOf(appSettingPrefs.getString(key,"2")));
-                            setOrientationMode(appSettingPrefs.getString("Orientation","2"));
-                            break;
-                    }
+            listener = (appSettingPrefs, key) -> {
+                Log.d("abcdefg", key);
+                switch (key) {
+                    // If dark mode is called, the settings will be changed in such a way that the background changes
+                    case "darkmode":
+                        setDarkMode(appSettingPrefs.getBoolean(key, false));
+                        break;
+                    case "VibrationSwitchPreference":
+                        MainActivity.vibrationEnabled = appSettingPrefs.getBoolean(key, true);
+                        break;
+                    case "Orientation":
+                        Log.d("joehoe", String.valueOf(appSettingPrefs.getString(key, "2")));
+                        setOrientationMode(appSettingPrefs.getString("Orientation", "2"));
+                        break;
                 }
             };
             appSettingPrefs.registerOnSharedPreferenceChangeListener(listener);
         }
     }
-
 }

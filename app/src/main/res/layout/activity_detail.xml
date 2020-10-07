@@ -6,4 +6,79 @@
     android:layout_height="match_parent"
     tools:context=".DetailActivity">
 
+    <TextView
+        android:id="@+id/idDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="#808080"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/nameDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:layout_marginTop="@dimen/big_padding"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idDetail" />
+
+    <TextView
+        android:id="@+id/addressDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:layout_marginTop="@dimen/big_padding"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameDetail" />
+
+    <TextView
+        android:id="@+id/phoneDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:layout_marginTop="@dimen/big_padding"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addressDetail" />
+
+    <TextView
+        android:id="@+id/emailDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:layout_marginTop="@dimen/big_padding"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phoneDetail" />
+
+    <TextView
+        android:id="@+id/bdayDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:layout_marginTop="@dimen/big_padding"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailDetail" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginEnd="@dimen/big_padding"
+        android:background="#00FFFFFF"
+        android:backgroundTint="#00FFFFFF"
+        android:drawableBottom="@android:drawable/ic_menu_edit"
+        android:onClick="onEdit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
