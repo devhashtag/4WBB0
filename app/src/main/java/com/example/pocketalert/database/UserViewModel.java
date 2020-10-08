@@ -69,4 +69,13 @@ public class UserViewModel extends AndroidViewModel {
     public void deleteAll() {
         repository.deleteAll();
     }
+
+    /**
+     * Changes the data of the selected user in the database.
+     *
+     * @param user The user with updated data.
+     */
+    public void update(User user) {
+        repository.update(user);
+    }
 }

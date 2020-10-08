@@ -13,8 +13,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
         android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/big_padding"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/mainText"
+        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,9 +27,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
         android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginEnd="@dimen/big_padding"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/mainText"
         android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/idDetail" />
 
@@ -36,9 +42,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
         android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginEnd="@dimen/big_padding"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/mainText"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/addressIconDetail"
         app:layout_constraintTop_toBottomOf="@+id/nameDetail" />
 
     <TextView
@@ -47,9 +56,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
         android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginEnd="@dimen/big_padding"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/mainText"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/phoneIconDetail"
         app:layout_constraintTop_toBottomOf="@+id/addressDetail" />
 
     <TextView
@@ -58,9 +70,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
         android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginEnd="@dimen/big_padding"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/mainText"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/emailIconDetail"
         app:layout_constraintTop_toBottomOf="@+id/phoneDetail" />
 
     <TextView
@@ -69,9 +84,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
         android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginEnd="@dimen/big_padding"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/mainText"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/bdayIconDetail"
         app:layout_constraintTop_toBottomOf="@+id/emailDetail" />
 
     <Button
@@ -86,5 +104,49 @@
         android:onClick="onEdit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/addressIconDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:contentDescription="@string/address_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/addressDetail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/addressDetail"
+        app:srcCompat="@drawable/ic_baseline_location_on_24" />
+
+    <ImageView
+        android:id="@+id/phoneIconDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:contentDescription="@string/phone_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/phoneDetail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/phoneDetail"
+        app:srcCompat="@drawable/ic_baseline_phone_24" />
+
+    <ImageView
+        android:id="@+id/emailIconDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:contentDescription="@string/email_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/emailDetail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/emailDetail"
+        app:srcCompat="@drawable/ic_baseline_mail_outline_24" />
+
+    <ImageView
+        android:id="@+id/bdayIconDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:contentDescription="@string/bday_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/bdayDetail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bdayDetail"
+        app:srcCompat="@drawable/ic_baseline_calendar_today_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

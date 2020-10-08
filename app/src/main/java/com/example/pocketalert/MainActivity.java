@@ -27,8 +27,9 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
 
     // Request codes
-    public static final int REGISTER_ACTIVITY_REQUEST_CODE = 1;
-    public static final int EDIT_DETAILS_ACTIVITY_REQUEST_CODE = 2;
+    public static final int REGISTER_ACTIVITY_REQUEST_CODE = 69;
+    public static final int EDIT_DETAILS_ACTIVITY_REQUEST_CODE = 420;
+    public static final int VIEW_DETAILS_ACTIVITY_REQUEST_CODE = 42; // The Answer to the Ultimate Question of Life, the Universe, and Everything
 
     public static boolean vibrationEnabled = true;
     public SwitchPreference settings = new SwitchPreference();
@@ -63,16 +64,34 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == REGISTER_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             // Adds a new user to the database
-            String id = data.getStringExtra(RegisterActivity.REGISTER_ACTIVITY_REPLY);
+            String id = data.getStringExtra("id");
             if (id != null) {
                 User user = new User(id);
                 userViewModel.insert(user);
             } else {
-                Toast.makeText(getApplicationContext(), R.string.data_not_saved, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.data_not_saved, Toast.LENGTH_SHORT).show();
             }
         } else if (requestCode == REGISTER_ACTIVITY_REQUEST_CODE) {
             // Device connection canceled
-            Toast.makeText(getApplicationContext(), R.string.data_not_saved, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.data_not_saved, Toast.LENGTH_SHORT).show();
+        } else if (requestCode == VIEW_DETAILS_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            // Updates the users data
+            String id = data.getStringExtra("id");
+            User user = new User(Objects.requireNonNull(id));
+            user.setName(Objects.requireNonNull(data.getStringExtra("name")));
+            user.setAddress(Objects.requireNonNull(data.getStringExtra("address")));
+            user.setPhone(Objects.requireNonNull(data.getStringExtra("phone")));
+            user.setEmail(Objects.requireNonNull(data.getStringExtra("email")));
+            user.setBirthday(Objects.requireNonNull(data.getStringExtra("birthday")));
+            userViewModel.update(user);
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            viewUser(id);
         }
     }
 
@@ -88,10 +107,14 @@ public class MainActivity extends AppCompatActivity {
      * When the name of one of the users is pressed, go to the DetailActivity with the details of that user.
      */
     public void viewUser(View view) {
-        Intent intent = new Intent(this, DetailActivity.class);
         Button viewButton = (Button) view;
-        putExtrasDetails(intent, viewButton.getText().toString());
-        startActivity(intent);
+        viewUser(viewButton.getText().toString());
+    }
+
+    public void viewUser(String id) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        putExtrasDetails(intent, id);
+        startActivityForResult(intent, VIEW_DETAILS_ACTIVITY_REQUEST_CODE);
     }
 
     /**
@@ -100,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
      * @param intent The intent to add the user's details to in the extras.
      * @param id     The ID of the user who's details should be put in the intent's extras.
      */
-    private void putExtrasDetails(Intent intent, String id) {
+    private void putExtrasDetails(@NonNull Intent intent, String id) {
         User user = userViewModel.getUser(id);
         intent.putExtra("id", id);
         intent.putExtra("name", user.getName());
@@ -129,11 +152,6 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.dropdown_menu, menu);
         return true;
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
     }
 
     public void closeApp(View view) {

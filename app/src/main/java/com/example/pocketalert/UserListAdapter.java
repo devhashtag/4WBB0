@@ -35,7 +35,9 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
         if (users != null) {
             User current = users.get(position);
             String id = current.getId();
-            holder.userView.setText(R.string.enter_name);
+            String name = current.getName();
+            if ("".equals(name)) holder.userView.setText(R.string.enter_name);
+            else holder.userView.setText(name);
             holder.editButton.setText(id);
             holder.deleteButton.setText(id);
             holder.moveUpButton.setText(id);

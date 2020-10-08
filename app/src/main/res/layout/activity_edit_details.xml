@@ -38,15 +38,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/small_padding"
-        android:layout_marginTop="@dimen/big_padding"
         android:layout_marginEnd="@dimen/big_padding"
-        android:layout_marginBottom="@dimen/big_padding"
         android:textColor="@color/mainText"
-        app:layout_constraintBottom_toTopOf="@+id/nameInput"
+        app:layout_constraintBottom_toBottomOf="@+id/idText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/idText"
-        app:layout_constraintTop_toBottomOf="@+id/EditDetailsTitle" />
+        app:layout_constraintTop_toTopOf="@+id/idText" />
 
     <EditText
         android:id="@+id/nameInput"
@@ -63,7 +61,7 @@
         android:textColor="@color/mainText"
         android:textColorHint="@color/textAlt"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/nameIconEditDetail"
         app:layout_constraintTop_toBottomOf="@+id/idText" />
 
     <EditText
@@ -76,12 +74,12 @@
         android:ems="10"
         android:hint="@string/address"
         android:importantForAutofill="no"
-        android:inputType="textPostalAddress"
+        android:inputType="textMultiLine|textPostalAddress"
         android:shadowColor="@color/textAlt"
         android:textColor="@color/mainText"
         android:textColorHint="@color/textAlt"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/addressIconEditDetail"
         app:layout_constraintTop_toBottomOf="@+id/nameInput" />
 
     <EditText
@@ -99,7 +97,7 @@
         android:textColor="@color/mainText"
         android:textColorHint="@color/textAlt"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/phoneIconEditDetail"
         app:layout_constraintTop_toBottomOf="@+id/addressInput" />
 
     <EditText
@@ -117,7 +115,7 @@
         android:textColor="@color/mainText"
         android:textColorHint="@color/textAlt"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/emailIconEditDetail"
         app:layout_constraintTop_toBottomOf="@+id/phoneInput" />
 
     <EditText
@@ -135,7 +133,7 @@
         android:textColor="@color/mainText"
         android:textColorHint="@color/textAlt"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bdayIconEditDetail"
         app:layout_constraintTop_toBottomOf="@+id/emailInput" />
 
     <Button
@@ -169,5 +167,60 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cancelEditButton"
         app:layout_constraintTop_toBottomOf="@+id/bdayInput" />
+
+    <ImageView
+        android:id="@+id/addressIconEditDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:contentDescription="@string/address_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/addressInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/addressInput"
+        app:srcCompat="@drawable/ic_baseline_location_on_24" />
+
+    <ImageView
+        android:id="@+id/phoneIconEditDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:contentDescription="@string/phone_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/phoneInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/phoneInput"
+        app:srcCompat="@drawable/ic_baseline_phone_24" />
+
+    <ImageView
+        android:id="@+id/emailIconEditDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:contentDescription="@string/email_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/emailInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/emailInput"
+        app:srcCompat="@drawable/ic_baseline_mail_outline_24" />
+
+    <ImageView
+        android:id="@+id/bdayIconEditDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:contentDescription="@string/bday_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/bdayInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bdayInput"
+        app:srcCompat="@drawable/ic_baseline_calendar_today_24" />
+
+    <ImageView
+        android:id="@+id/nameIconEditDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:contentDescription="@string/person_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/nameInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/nameInput"
+        app:srcCompat="@drawable/ic_baseline_person_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

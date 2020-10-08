@@ -15,7 +15,6 @@
     <!-- Messages Preferences -->
     <string name="your_information">Edit personal information</string>
 
-
     <!--  Button strings  -->
     <string name="save">Save</string>
     <string name="connect">Connect</string>
@@ -37,4 +36,11 @@
     <string name="email">Email</string>
     <string name="bday">Birthday</string>
     <string name="edit_details_title">Edit personal details</string>
+
+    <!--  Image content description  -->
+    <string name="person_icon">Person icon</string>
+    <string name="address_icon">Address icon</string>
+    <string name="phone_icon">Phone icon</string>
+    <string name="email_icon">Email icon</string>
+    <string name="bday_icon">Birthday icon</string>
 </resources>
