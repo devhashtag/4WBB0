@@ -8,7 +8,7 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterActivity extends AppCompatActivity {
-
+//TODO improve the way the instruction text is shown.
     private EditText idInput;
 
     @Override
@@ -42,5 +42,10 @@ public class RegisterActivity extends AppCompatActivity {
         Intent replyIntent = new Intent();
         setResult(RESULT_CANCELED, replyIntent);
         finish();
+    }
+
+    public void howToConnect(View view) {
+        Intent intent = new Intent(this, RegisterInstructionsActivity.class);
+        startActivity(intent);
     }
 }

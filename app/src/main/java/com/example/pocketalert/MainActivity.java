@@ -9,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +24,7 @@ import com.example.pocketalert.database.UserViewModel;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+    //TODO make activities landscape mode proof
 
     // Request codes
     public static final int REGISTER_ACTIVITY_REQUEST_CODE = 69;
@@ -68,12 +68,7 @@ public class MainActivity extends AppCompatActivity {
             if (id != null) {
                 User user = new User(id);
                 userViewModel.insert(user);
-            } else {
-                Toast.makeText(this, R.string.data_not_saved, Toast.LENGTH_SHORT).show();
             }
-        } else if (requestCode == REGISTER_ACTIVITY_REQUEST_CODE) {
-            // Device connection canceled
-            Toast.makeText(this, R.string.data_not_saved, Toast.LENGTH_SHORT).show();
         } else if (requestCode == VIEW_DETAILS_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             // Updates the users data
             String id = data.getStringExtra("id");
@@ -85,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
             user.setBirthday(Objects.requireNonNull(data.getStringExtra("birthday")));
             userViewModel.update(user);
 
+            //TODO: updating still occasionally takes longer resulting in the old info being show
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {

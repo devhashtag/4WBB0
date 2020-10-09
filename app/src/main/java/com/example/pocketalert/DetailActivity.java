@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -94,12 +93,7 @@ public class DetailActivity extends AppCompatActivity {
                     wasDataUpdated = true;
                     sendReply();
                 }
-            } else {
-                Toast.makeText(this, R.string.data_not_saved, Toast.LENGTH_SHORT).show();
             }
-        } else if (requestCode == EDIT_DETAILS_ACTIVITY_REQUEST_CODE) {
-            // Edit details canceled
-            Toast.makeText(this, R.string.data_not_saved, Toast.LENGTH_SHORT).show();
         }
     }
 

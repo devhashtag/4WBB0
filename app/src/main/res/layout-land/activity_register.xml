@@ -28,7 +28,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/huge_padding"
-        android:layout_marginTop="@dimen/mega_padding"
+        android:layout_marginTop="@dimen/big_padding"
         android:layout_marginEnd="@dimen/huge_padding"
         android:ems="10"
         android:hint="@string/identification_number"
@@ -44,48 +44,50 @@
     <Button
         android:id="@+id/cancelConnectButton"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="0dp"
         android:layout_marginStart="@dimen/huge_padding"
-        android:layout_marginTop="64dp"
         android:layout_marginEnd="@dimen/big_padding"
         android:backgroundTint="@color/red_button"
         android:onClick="onCancelConnect"
         android:text="@android:string/cancel"
         android:textColor="@color/mainText"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/connectButton"
+        app:layout_constraintBottom_toBottomOf="@+id/howToConnectButton"
+        app:layout_constraintEnd_toStartOf="@+id/howToConnectButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/connectInput" />
+        app:layout_constraintTop_toTopOf="@+id/howToConnectButton" />
 
     <Button
         android:id="@+id/connectButton"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="0dp"
         android:layout_marginStart="@dimen/big_padding"
-        android:layout_marginTop="64dp"
         android:layout_marginEnd="@dimen/huge_padding"
         android:backgroundTint="@color/green_button"
         android:onClick="onConnect"
         android:text="@string/connect"
         android:textColor="@color/mainText"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/howToConnectButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cancelConnectButton"
-        app:layout_constraintTop_toBottomOf="@+id/connectInput" />
+        app:layout_constraintStart_toEndOf="@+id/howToConnectButton"
+        app:layout_constraintTop_toTopOf="@+id/howToConnectButton" />
 
     <Button
         android:id="@+id/howToConnectButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
         android:layout_marginEnd="@dimen/big_padding"
-        android:layout_marginBottom="@dimen/huge_padding"
+        android:includeFontPadding="false"
         android:onClick="howToConnect"
         android:text="@string/how_to_connect_a_new_device"
         android:textColor="@color/mainText"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/connectButton"
         app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/cancelConnectButton"
+        app:layout_constraintTop_toBottomOf="@+id/connectInput" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

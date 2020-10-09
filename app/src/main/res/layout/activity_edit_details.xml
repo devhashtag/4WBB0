@@ -9,9 +9,11 @@
 
     <TextView
         android:id="@+id/EditDetailsTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
         android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginEnd="@dimen/big_padding"
         android:text="@string/edit_details_title"
         android:textAlignment="center"
         android:textColor="@color/mainText"
@@ -46,6 +48,17 @@
         app:layout_constraintStart_toEndOf="@+id/idText"
         app:layout_constraintTop_toTopOf="@+id/idText" />
 
+    <ImageView
+        android:id="@+id/nameIconEditDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:contentDescription="@string/person_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/nameInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/nameInput"
+        app:srcCompat="@drawable/ic_baseline_person_24" />
+
     <EditText
         android:id="@+id/nameInput"
         android:layout_width="0dp"
@@ -63,6 +76,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/nameIconEditDetail"
         app:layout_constraintTop_toBottomOf="@+id/idText" />
+
+    <ImageView
+        android:id="@+id/addressIconEditDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:contentDescription="@string/address_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/addressInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/addressInput"
+        app:srcCompat="@drawable/ic_baseline_location_on_24" />
 
     <EditText
         android:id="@+id/addressInput"
@@ -82,6 +106,17 @@
         app:layout_constraintStart_toEndOf="@+id/addressIconEditDetail"
         app:layout_constraintTop_toBottomOf="@+id/nameInput" />
 
+    <ImageView
+        android:id="@+id/phoneIconEditDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:contentDescription="@string/phone_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/phoneInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/phoneInput"
+        app:srcCompat="@drawable/ic_baseline_phone_24" />
+
     <EditText
         android:id="@+id/phoneInput"
         android:layout_width="0dp"
@@ -100,6 +135,17 @@
         app:layout_constraintStart_toEndOf="@+id/phoneIconEditDetail"
         app:layout_constraintTop_toBottomOf="@+id/addressInput" />
 
+    <ImageView
+        android:id="@+id/emailIconEditDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:contentDescription="@string/email_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/emailInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/emailInput"
+        app:srcCompat="@drawable/ic_baseline_mail_outline_24" />
+
     <EditText
         android:id="@+id/emailInput"
         android:layout_width="0dp"
@@ -117,6 +163,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/emailIconEditDetail"
         app:layout_constraintTop_toBottomOf="@+id/phoneInput" />
+
+    <ImageView
+        android:id="@+id/bdayIconEditDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:contentDescription="@string/bday_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/bdayInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bdayInput"
+        app:srcCompat="@drawable/ic_baseline_calendar_today_24" />
 
     <EditText
         android:id="@+id/bdayInput"
@@ -167,60 +224,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cancelEditButton"
         app:layout_constraintTop_toBottomOf="@+id/bdayInput" />
-
-    <ImageView
-        android:id="@+id/addressIconEditDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/big_padding"
-        android:contentDescription="@string/address_icon"
-        app:layout_constraintBottom_toBottomOf="@+id/addressInput"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/addressInput"
-        app:srcCompat="@drawable/ic_baseline_location_on_24" />
-
-    <ImageView
-        android:id="@+id/phoneIconEditDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/big_padding"
-        android:contentDescription="@string/phone_icon"
-        app:layout_constraintBottom_toBottomOf="@+id/phoneInput"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/phoneInput"
-        app:srcCompat="@drawable/ic_baseline_phone_24" />
-
-    <ImageView
-        android:id="@+id/emailIconEditDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/big_padding"
-        android:contentDescription="@string/email_icon"
-        app:layout_constraintBottom_toBottomOf="@+id/emailInput"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/emailInput"
-        app:srcCompat="@drawable/ic_baseline_mail_outline_24" />
-
-    <ImageView
-        android:id="@+id/bdayIconEditDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/big_padding"
-        android:contentDescription="@string/bday_icon"
-        app:layout_constraintBottom_toBottomOf="@+id/bdayInput"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/bdayInput"
-        app:srcCompat="@drawable/ic_baseline_calendar_today_24" />
-
-    <ImageView
-        android:id="@+id/nameIconEditDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/big_padding"
-        android:contentDescription="@string/person_icon"
-        app:layout_constraintBottom_toBottomOf="@+id/nameInput"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/nameInput"
-        app:srcCompat="@drawable/ic_baseline_person_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
