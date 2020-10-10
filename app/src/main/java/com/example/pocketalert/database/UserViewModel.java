@@ -19,23 +19,63 @@ public class UserViewModel extends AndroidViewModel {
         allUsers = repository.getAllUsers();
     }
 
+    /**
+     * @return A LiveData<List<User>> of all the users in the database.
+     */
     public LiveData<List<User>> getAllUsers() {
         return allUsers;
     }
 
+    /**
+     * Adds a new User to the database.
+     *
+     * @param user The User to be added.
+     */
     public void insert(User user) {
         repository.insert(user);
     }
 
-    public List<User> getUser(String device_id) {
-        return repository.getUser(device_id);
+    /**
+     * Finds and returns the User with a certain ID.
+     *
+     * @param id The ID of the User.
+     * @return The User with the given ID.
+     */
+    public User getUser(String id) {
+        return repository.getUser(id).get(0);
     }
 
+    /**
+     * Deletes the specified user from the database.
+     *
+     * @param user The User to be removed.
+     */
     public void delete(User user) {
         repository.delete(user);
     }
 
+    /**
+     * Deletes the user with the specified ID from the database.
+     *
+     * @param id The ID of the user to be removed.
+     */
+    public void deleteById(String id) {
+        delete(getUser(id));
+    }
+
+    /**
+     * Deletes everyone from the database.
+     */
     public void deleteAll() {
         repository.deleteAll();
+    }
+
+    /**
+     * Changes the data of the selected user in the database.
+     *
+     * @param user The user with updated data.
+     */
+    public void update(User user) {
+        repository.update(user);
     }
 }

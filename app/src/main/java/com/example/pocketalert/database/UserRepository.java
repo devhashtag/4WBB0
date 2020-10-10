@@ -31,20 +31,34 @@ class UserRepository {
         UserRoomDatabase.databaseWriteExecutor.execute(() -> userDao.deleteAll());
     }
 
+    void update(User user) {
+        UserRoomDatabase.databaseWriteExecutor.execute(() -> userDao.update(user));
+    }
+
     // You must call this on a non-UI thread or your app will throw an exception. Room ensures
     // that you're not doing any long running operations on the main thread, blocking the UI.
     void insert(User user) {
         UserRoomDatabase.databaseWriteExecutor.execute(() -> userDao.insert(user));
     }
 
-    List<User> getUser(String device_id) {
+    List<User> getUser(String id) {
         final ArrayList<User>[] user = new ArrayList[1];
-        UserRoomDatabase.databaseWriteExecutor.execute(() -> user[0] = (ArrayList<User>) userDao.getUser(device_id));
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        final boolean[] threadDone = {false};
+
+        UserRoomDatabase.databaseWriteExecutor.execute(() -> {
+            user[0] = (ArrayList<User>) userDao.getUser(id);
+            threadDone[0] = true;
+        });
+
+        // wait for thread above to finish
+        while (!threadDone[0]) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
         return user[0];
     }
 }

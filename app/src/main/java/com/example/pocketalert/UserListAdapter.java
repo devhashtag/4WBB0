@@ -35,11 +35,11 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
         if (users != null) {
             User current = users.get(position);
             String id = current.getId();
-            holder.userView.setText(R.string.enter_name);
+            String name = current.getName();
+            if ("".equals(name)) holder.userView.setText(R.string.enter_name);
+            else holder.userView.setText(name);
             holder.editButton.setText(id);
             holder.deleteButton.setText(id);
-            holder.moveUpButton.setText(id);
-            holder.moveDownButton.setText(id);
         }
     }
 
@@ -61,16 +61,12 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
         private final TextView userView;
         private final Button editButton;
         private final Button deleteButton;
-        private final Button moveUpButton;
-        private final Button moveDownButton;
 
         private UserViewHolder(View itemView) {
             super(itemView);
             userView = itemView.findViewById(R.id.userView);
             editButton = itemView.findViewById(R.id.viewUserButton);
             deleteButton = itemView.findViewById(R.id.deleteButton);
-            moveUpButton = itemView.findViewById(R.id.moveUserUpButton);
-            moveDownButton = itemView.findViewById(R.id.moveUserDownButton);
         }
     }
 }
