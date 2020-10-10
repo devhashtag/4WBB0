@@ -1,17 +1,21 @@
-package com.example.pocketalert;
-
+package com.example.pocketalert.databaseHistory;
 
 import android.app.Application;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
+import com.example.pocketalert.database.User;
 
 import java.util.List;
 
 public class HistoryViewModel extends AndroidViewModel {
 
     private HistoryRepository repository;
+
     private LiveData<List<History>> allHistoryMessages;
 
     public HistoryViewModel(@NonNull Application application) {
@@ -28,16 +32,16 @@ public class HistoryViewModel extends AndroidViewModel {
         repository.update(history);
     }
 
+    public LiveData<List<History>> getAllHistoryMessages(){
+        return allHistoryMessages;
+    }
+
     public void delete(History history){
         repository.delete(history);
     }
 
     public void deleteAllHistoryMessages(History history){
         repository.deleteAllHistoryListings();
-    }
-
-    public LiveData<List<History>> getAllHistoryMessages(){
-        return allHistoryMessages;
     }
 
 }

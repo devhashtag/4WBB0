@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,13 +29,12 @@ public class MainActivity extends AppCompatActivity {
     public static final int REGISTER_ACTIVITY_REQUEST_CODE = 1;
     public static final int EDIT_DETAILS_ACTIVITY_REQUEST_CODE = 2;
     public static boolean vibrationEnabled = true;
-    public SwitchPreference settings = new SwitchPreference();
+    public static boolean serviceHasStarted = false;
     private UserViewModel userViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // Pair the xml with the mainactivity
         setContentView(R.layout.activity_main);
 
@@ -47,6 +47,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Update the cached copy of the users in the adapter.
         userViewModel.getAllUsers().observe(this, adapter::setUsers);
+        if(!serviceHasStarted){
+            startService();
+            serviceHasStarted = true;
+        }
+        load_Setting();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -61,6 +66,12 @@ public class MainActivity extends AppCompatActivity {
             // Device connection canceled
             Toast.makeText(getApplicationContext(), R.string.data_not_saved, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void startService(){
+        Intent backgroundIntent = new Intent(this,backgroundActivity.class);
+
+        ContextCompat.startForegroundService(this,backgroundIntent);
     }
 
     public void addDevice(View view) {
@@ -95,11 +106,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void Load_setting() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean check_night = sp.getBoolean("darkmode", false);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -122,14 +128,17 @@ public class MainActivity extends AppCompatActivity {
             case R.id.SettingsActivity:
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingsIntent);
-                return true;
-            case R.id.itemTwo:
-                return true;
+                break;
+            case R.id.HistorySettings:
+                Intent historyIntent = new Intent(this,HistoryActivity.class);
+                startActivity(historyIntent);
+                break;
             case R.id.itemThree:
-                return true;
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
     public void setDarkMode(boolean darkModeSetting) {
@@ -163,6 +172,11 @@ public class MainActivity extends AppCompatActivity {
                 this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 break;
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override

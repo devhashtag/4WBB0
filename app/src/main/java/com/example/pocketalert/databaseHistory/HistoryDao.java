@@ -1,4 +1,4 @@
-package com.example.pocketalert;
+package com.example.pocketalert.databaseHistory;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -16,15 +16,18 @@ public interface HistoryDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(History history);
 
-    @Update
-    void update(History history);
-
     @Delete
     void delete(History history);
+
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    void update(History history);
 
     @Query("DELETE FROM fall_history_table")
     void deleteAllHistory();
 
-    @Query("SELECT * FROM fall_history_table ORDER BY mUserId DESC")
+    @Query("SELECT * FROM fall_history_table")
     LiveData<List<History>> getAllHistory();
+
+    @Query("SELECT * FROM fall_history_table WHERE mId = :id_history")
+    List<History>  getHistory(int id_history);
 }

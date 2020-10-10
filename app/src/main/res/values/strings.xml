@@ -11,10 +11,13 @@
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
     <string name="defaultRotationMode">2</string>
+    <string name="settings">Settings</string>
+    <string name="history">History</string>
+    <string name="itemThree">Item Three</string>
+
 
     <!-- Messages Preferences -->
     <string name="your_information">Edit personal information</string>
-
 
     <!--  Button strings  -->
     <string name="save">Save</string>
@@ -37,4 +40,23 @@
     <string name="email">Email</string>
     <string name="bday">Birthday</string>
     <string name="edit_details_title">Edit personal details</string>
+
+    <!--  TextView string  History-->
+    <string name="text_view_title">Previous messages</string>
+    <string name="text_view_description">These are the previous messages:</string>
+    <string name="text_view_id">ID of the fall:</string>
+    <string name="text_view_date">Date</string>
+    <string name="text_view_userID">UserID:</string>
+    <string name="text_view_name">Name of the user:</string>
+    <string name="text_view_locationx">Location X :</string>
+    <string name="text_view_locationy">Location Y :</string>
+    <string name="text_view_ongoing">Help still needed:</string>
+
+    <!--  String for notifications-->
+    <string name="user_notification_title">Someone needs your help!</string>
+    <string name="user_notification_description">User has fallen!</string>
+    <string name="user_notification_channel_name">Someone needs your help!</string>
+    <string name="user_notification_channel_description">User has fallen!</string>
+    <string name="intent_extra">extra_data_history</string>
+
 </resources>
