@@ -4,16 +4,17 @@
     <item
         android:id="@+id/SettingsActivity"
         android:icon="@drawable/ic_settings"
-        android:title="Settings"
+        android:title="@string/settings"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/itemTwo"
-        android:title="Item Two"
-        app:showAsAction="never" />
+        android:id="@+id/HistorySettings"
+        android:icon="@drawable/ic_baseline_history_24"
+        android:title="@string/history"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/itemThree"
-        android:title="Item Three"
+        android:title="@string/itemThree"
         app:showAsAction="never" />
 </menu>
