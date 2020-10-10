@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {User.class}, version = 2)
+@Database(entities = {User.class}, version = 2,exportSchema = false)
 public abstract class UserRoomDatabase extends RoomDatabase {
 
     private static final int NUMBER_OF_THREADS = 4;

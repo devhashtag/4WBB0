@@ -13,6 +13,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int VIEW_DETAILS_ACTIVITY_REQUEST_CODE = 42; // The Answer to the Ultimate Question of Life, the Universe, and Everything
 
     public static boolean vibrationEnabled = true;
-    public SwitchPreference settings = new SwitchPreference();
+    public static boolean serviceHasStarted = false;
     private UserViewModel userViewModel;
 
     @Override
@@ -50,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Update the cached copy of the users in the adapter.
         userViewModel.getAllUsers().observe(this, adapter::setUsers);
+        if(!serviceHasStarted){
+            startService();
+            serviceHasStarted = true;
+        }
+        load_Setting();
     }
 
     /**
@@ -90,7 +96,11 @@ public class MainActivity extends AppCompatActivity {
             viewUser(id);
         }
     }
+    public void startService(){
+        Intent backgroundIntent = new Intent(this,backgroundActivity.class);
 
+        ContextCompat.startForegroundService(this,backgroundIntent);
+    }
     /**
      * When the FAB with the plus is clicked, go to the RegisterActivity.
      */
@@ -138,11 +148,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void Load_setting() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean check_night = sp.getBoolean("darkmode", false);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -160,14 +165,17 @@ public class MainActivity extends AppCompatActivity {
             case R.id.SettingsActivity:
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingsIntent);
-                return true;
-            case R.id.itemTwo:
-                return true;
+                break;
+            case R.id.HistorySettings:
+                Intent historyIntent = new Intent(this,HistoryActivity.class);
+                startActivity(historyIntent);
+                break;
             case R.id.itemThree:
-                return true;
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
     public void setDarkMode(boolean darkModeSetting) {
@@ -201,6 +209,11 @@ public class MainActivity extends AppCompatActivity {
                 this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 break;
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
