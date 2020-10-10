@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
-        android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginTop="@dimen/small_padding"
         android:layout_marginEnd="@dimen/big_padding"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/mainText"
@@ -36,56 +36,100 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/idDetail" />
 
+    <ImageView
+        android:id="@+id/addressIconDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:contentDescription="@string/address_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/addressDetail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/addressDetail"
+        app:srcCompat="@drawable/ic_baseline_location_on_24" />
+
     <TextView
         android:id="@+id/addressDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
-        android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginTop="@dimen/small_padding"
         android:layout_marginEnd="@dimen/big_padding"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/mainText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/addressIconDetail"
         app:layout_constraintTop_toBottomOf="@+id/nameDetail" />
 
+    <ImageView
+        android:id="@+id/phoneIconDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:contentDescription="@string/phone_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/phoneDetail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/phoneDetail"
+        app:srcCompat="@drawable/ic_baseline_phone_24" />
+
     <TextView
         android:id="@+id/phoneDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
-        android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginTop="@dimen/small_padding"
         android:layout_marginEnd="@dimen/big_padding"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/mainText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/phoneIconDetail"
         app:layout_constraintTop_toBottomOf="@+id/addressDetail" />
 
+    <ImageView
+        android:id="@+id/emailIconDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:contentDescription="@string/email_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/emailDetail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/emailDetail"
+        app:srcCompat="@drawable/ic_baseline_mail_outline_24" />
+
     <TextView
         android:id="@+id/emailDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
-        android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginTop="@dimen/small_padding"
         android:layout_marginEnd="@dimen/big_padding"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/mainText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/emailIconDetail"
         app:layout_constraintTop_toBottomOf="@+id/phoneDetail" />
 
+    <ImageView
+        android:id="@+id/bdayIconDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:contentDescription="@string/bday_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/bdayDetail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bdayDetail"
+        app:srcCompat="@drawable/ic_baseline_calendar_today_24" />
+
     <TextView
         android:id="@+id/bdayDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
-        android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginTop="@dimen/small_padding"
         android:layout_marginEnd="@dimen/big_padding"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/mainText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -105,48 +149,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/addressIconDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginStart="@dimen/big_padding"
-        android:contentDescription="@string/address_icon"
-        app:layout_constraintBottom_toBottomOf="@+id/addressDetail"
+        android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginEnd="@dimen/big_padding"
+        android:layout_marginBottom="@dimen/big_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/addressDetail"
-        app:srcCompat="@drawable/ic_baseline_location_on_24" />
-
-    <ImageView
-        android:id="@+id/phoneIconDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/big_padding"
-        android:contentDescription="@string/phone_icon"
-        app:layout_constraintBottom_toBottomOf="@+id/phoneDetail"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/phoneDetail"
-        app:srcCompat="@drawable/ic_baseline_phone_24" />
-
-    <ImageView
-        android:id="@+id/emailIconDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/big_padding"
-        android:contentDescription="@string/email_icon"
-        app:layout_constraintBottom_toBottomOf="@+id/emailDetail"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/emailDetail"
-        app:srcCompat="@drawable/ic_baseline_mail_outline_24" />
-
-    <ImageView
-        android:id="@+id/bdayIconDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/big_padding"
-        android:contentDescription="@string/bday_icon"
-        app:layout_constraintBottom_toBottomOf="@+id/bdayDetail"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/bdayDetail"
-        app:srcCompat="@drawable/ic_baseline_calendar_today_24" />
+        app:layout_constraintTop_toBottomOf="@+id/bdayDetail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

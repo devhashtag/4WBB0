@@ -48,4 +48,6 @@
     <string name="email">Email</string>
     <string name="bday">Birthday</string>
     <string name="edit_details_title">Edit personal details</string>
+
+    <!--  Other  -->
 </resources>
