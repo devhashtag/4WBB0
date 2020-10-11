@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/idDetail"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
         android:layout_marginTop="@dimen/small_padding"
@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@+id/nameDetail"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
         android:layout_marginTop="@dimen/small_padding"
@@ -49,7 +49,7 @@
 
     <TextView
         android:id="@+id/addressDetail"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
         android:layout_marginTop="@dimen/small_padding"
@@ -74,7 +74,7 @@
 
     <TextView
         android:id="@+id/phoneDetail"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
         android:layout_marginTop="@dimen/small_padding"
@@ -99,7 +99,7 @@
 
     <TextView
         android:id="@+id/emailDetail"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
         android:layout_marginTop="@dimen/small_padding"
@@ -124,7 +124,7 @@
 
     <TextView
         android:id="@+id/bdayDetail"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
         android:layout_marginTop="@dimen/small_padding"
