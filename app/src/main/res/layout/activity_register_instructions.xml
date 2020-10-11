@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mainBackground"
     tools:context=".RegisterInstructionsActivity">
 
     <TextView
@@ -29,6 +30,7 @@
         android:layout_marginStart="@dimen/big_padding"
         android:layout_marginTop="@dimen/huge_padding"
         android:layout_marginEnd="@dimen/big_padding"
+        android:textColor="@color/mainText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,8 +42,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/huge_padding"
         android:layout_marginEnd="@dimen/big_padding"
+        android:backgroundTint="@color/generic_button"
         android:onClick="nextInstruction"
         android:text="@string/next"
+        android:textColor="@color/mainText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/instructionText" />
 
@@ -51,8 +55,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
         android:layout_marginTop="@dimen/huge_padding"
+        android:backgroundTint="@color/generic_button"
         android:onClick="previousInstruction"
         android:text="@string/previous"
+        android:textColor="@color/mainText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/instructionText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

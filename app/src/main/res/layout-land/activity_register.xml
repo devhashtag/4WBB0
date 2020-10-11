@@ -79,6 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
         android:layout_marginEnd="@dimen/big_padding"
+        android:backgroundTint="@color/generic_button"
         android:includeFontPadding="false"
         android:onClick="howToConnect"
         android:text="@string/how_to_connect_a_new_device"

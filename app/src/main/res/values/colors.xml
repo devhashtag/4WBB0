@@ -13,4 +13,5 @@
     <!--  Buttons  -->
     <color name="red_button">#F44336</color>
     <color name="green_button">#4CAF50</color>
+    <color name="generic_button">#D7D7D7</color>
 </resources>
