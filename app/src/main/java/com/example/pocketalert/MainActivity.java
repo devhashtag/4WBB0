@@ -56,6 +56,13 @@ public class MainActivity extends AppCompatActivity {
             serviceHasStarted = true;
         }
         load_Setting();
+
+        findViewById(R.id.btnStop).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopService();
+            }
+        });
     }
 
     /**
@@ -97,10 +104,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void startService(){
-        Intent backgroundIntent = new Intent(this,backgroundActivity.class);
-
-        ContextCompat.startForegroundService(this,backgroundIntent);
+        Intent backgroundIntent = new Intent(this, ForegroundService.class);
+        backgroundIntent.setAction("START");
+        ContextCompat.startForegroundService(this, backgroundIntent);
     }
+
+    public void stopService() {
+        Intent backgroundIntent = new Intent(this, ForegroundService.class);
+        backgroundIntent.setAction("STOP");
+        ContextCompat.startForegroundService(this, backgroundIntent);
+    }
+
+
     /**
      * When the FAB with the plus is clicked, go to the RegisterActivity.
      */
