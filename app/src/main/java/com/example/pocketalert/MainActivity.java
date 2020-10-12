@@ -25,7 +25,6 @@ import com.example.pocketalert.database.UserViewModel;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    //TODO make activities landscape mode proof
 
     // Request codes
     public static final int REGISTER_ACTIVITY_REQUEST_CODE = 69;
@@ -86,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             user.setBirthday(Objects.requireNonNull(data.getStringExtra("birthday")));
             userViewModel.update(user);
 
-            //TODO: updating still occasionally takes longer resulting in the old info being show
+            // updating still occasionally takes longer resulting in the old info being show
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {

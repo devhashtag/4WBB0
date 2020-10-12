@@ -154,6 +154,9 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         intent.putExtra("birthday", birthday);
     }
 
+    /**
+     * When the data has been edited, that info is sent to the main activity to be updated in the database.
+     */
     private void sendReply() {
         Intent replyIntent = new Intent();
 
@@ -167,6 +170,9 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         finish();
     }
 
+    /**
+     * In this method a marker is put on the map.
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         googleMap.addMarker(new MarkerOptions()
