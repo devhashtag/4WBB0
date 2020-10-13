@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mainBackground"
+    tools:context=".EditDetailsActivity">
+
+    <TextView
+        android:id="@+id/EditDetailsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginEnd="@dimen/big_padding"
+        android:text="@string/edit_details_title"
+        android:textAlignment="center"
+        android:textColor="@color/mainText"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/big_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/saveEditButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EditDetailsTitle">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/scrollConstraint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/idText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/big_padding"
+                android:layout_marginTop="@dimen/big_padding"
+                android:text="@string/device_id_number"
+                android:textColor="@color/mainText"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/deviceID"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/small_padding"
+                android:textColor="@color/mainText"
+                app:layout_constraintBottom_toBottomOf="@+id/idText"
+                app:layout_constraintStart_toEndOf="@+id/idText"
+                app:layout_constraintTop_toTopOf="@+id/idText" />
+
+            <ImageView
+                android:id="@+id/nameIconEditDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:contentDescription="@string/person_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/nameInput"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/nameInput"
+                app:srcCompat="@drawable/ic_baseline_person_24" />
+
+            <EditText
+                android:id="@+id/nameInput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/big_padding"
+                android:layout_marginTop="@dimen/big_padding"
+                android:layout_marginEnd="@dimen/big_padding"
+                android:ems="10"
+                android:hint="@string/name"
+                android:importantForAutofill="no"
+                android:inputType="textPersonName"
+                android:shadowColor="@color/textAlt"
+                android:textColor="@color/mainText"
+                android:textColorHint="@color/textAlt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/nameIconEditDetail"
+                app:layout_constraintTop_toBottomOf="@+id/idText" />
+
+            <ImageView
+                android:id="@+id/addressIconEditDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/big_padding"
+                android:contentDescription="@string/address_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/addressInput"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/addressInput"
+                app:srcCompat="@drawable/ic_baseline_location_on_24" />
+
+            <EditText
+                android:id="@+id/addressInput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/big_padding"
+                android:layout_marginTop="@dimen/big_padding"
+                android:layout_marginEnd="@dimen/big_padding"
+                android:ems="10"
+                android:hint="@string/address"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine|textPostalAddress"
+                android:shadowColor="@color/textAlt"
+                android:textColor="@color/mainText"
+                android:textColorHint="@color/textAlt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/addressIconEditDetail"
+                app:layout_constraintTop_toBottomOf="@+id/nameInput" />
+
+            <ImageView
+                android:id="@+id/phoneIconEditDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/big_padding"
+                android:contentDescription="@string/phone_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/phoneInput"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/phoneInput"
+                app:srcCompat="@drawable/ic_baseline_phone_24" />
+
+            <EditText
+                android:id="@+id/phoneInput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/big_padding"
+                android:layout_marginTop="@dimen/big_padding"
+                android:layout_marginEnd="@dimen/big_padding"
+                android:ems="10"
+                android:hint="@string/phone"
+                android:importantForAutofill="no"
+                android:inputType="phone"
+                android:shadowColor="@color/textAlt"
+                android:textColor="@color/mainText"
+                android:textColorHint="@color/textAlt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/phoneIconEditDetail"
+                app:layout_constraintTop_toBottomOf="@+id/addressInput" />
+
+            <ImageView
+                android:id="@+id/emailIconEditDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/big_padding"
+                android:contentDescription="@string/email_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/emailInput"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/emailInput"
+                app:srcCompat="@drawable/ic_baseline_mail_outline_24" />
+
+            <EditText
+                android:id="@+id/emailInput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/big_padding"
+                android:layout_marginTop="@dimen/big_padding"
+                android:layout_marginEnd="@dimen/big_padding"
+                android:ems="10"
+                android:hint="@string/email"
+                android:importantForAutofill="no"
+                android:inputType="textEmailAddress"
+                android:shadowColor="@color/textAlt"
+                android:textColor="@color/mainText"
+                android:textColorHint="@color/textAlt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/emailIconEditDetail"
+                app:layout_constraintTop_toBottomOf="@+id/phoneInput" />
+
+            <ImageView
+                android:id="@+id/bdayIconEditDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/big_padding"
+                android:contentDescription="@string/bday_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/bdayInput"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/bdayInput"
+                app:srcCompat="@drawable/ic_baseline_calendar_today_24" />
+
+            <EditText
+                android:id="@+id/bdayInput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/big_padding"
+                android:layout_marginTop="@dimen/big_padding"
+                android:layout_marginEnd="@dimen/big_padding"
+                android:ems="10"
+                android:hint="@string/bday"
+                android:importantForAutofill="no"
+                android:inputType="date"
+                android:shadowColor="@color/textAlt"
+                android:textColor="@color/mainText"
+                android:textColorHint="@color/textAlt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/bdayIconEditDetail"
+                app:layout_constraintTop_toBottomOf="@+id/emailInput" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/cancelEditButton"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginEnd="@dimen/big_padding"
+        android:layout_marginBottom="@dimen/huge_padding"
+        android:backgroundTint="@color/red_button"
+        android:onClick="onCancelDetails"
+        android:text="@android:string/cancel"
+        android:textColor="@color/mainText"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/saveEditButton" />
+
+    <Button
+        android:id="@+id/saveEditButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/huge_padding"
+        android:layout_marginBottom="@dimen/big_padding"
+        android:backgroundTint="@color/green_button"
+        android:onClick="onSaveDetails"
+        android:text="@string/save"
+        android:textColor="@color/mainText"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/cancelEditButton"
+        app:layout_constraintEnd_toEndOf="@+id/cancelEditButton"
+        app:layout_constraintStart_toStartOf="@+id/cancelEditButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

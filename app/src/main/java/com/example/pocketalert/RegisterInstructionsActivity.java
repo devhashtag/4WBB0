@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterInstructionsActivity extends AppCompatActivity {
 
-    private Button prev, next;
+    private Button previous, next;
     private TextView instruction;
     private int[] instructionIDs;
     private int currentInstruction = 0;
@@ -21,49 +21,66 @@ public class RegisterInstructionsActivity extends AppCompatActivity {
 
         instruction = findViewById(R.id.instructionText);
         next = findViewById(R.id.nextInstructionButton);
-        prev = findViewById(R.id.prevInstructionButton);
+        previous = findViewById(R.id.prevInstructionButton);
 
         // TODO add more instruction. make them different steps.
-        instructionIDs = new int[]{R.string.connect_device_instructions_1};
+        instructionIDs = new int[]{
+                R.string.connect_device_instructions_1,
+                R.string.connect_device_instructions_2,
+                R.string.connect_device_instructions_3,
+                R.string.connect_device_instructions_4};
 
         setInstructionToCurrentInstruction();
 
-        prev.setVisibility(View.INVISIBLE);
+        previous.setVisibility(View.INVISIBLE);
         if (currentInstruction == instructionIDs.length - 1) {
             next.setVisibility(View.INVISIBLE);
         }
     }
 
+    /**
+     * Goes to the next instruction step if possible.
+     */
     public void nextInstruction(View view) {
         if (currentInstruction < instructionIDs.length - 1) {
-            if (currentInstruction == 0) {
-                prev.setVisibility(View.VISIBLE);
-            }
-
             currentInstruction = currentInstruction + 1;
             setInstructionToCurrentInstruction();
 
+            // if there are instruction steps before this, show the previous button.
+            if (currentInstruction > 0) {
+                previous.setVisibility(View.VISIBLE);
+            }
+
+            // if this is the last instruction step, hide the next button.
             if (currentInstruction == instructionIDs.length - 1) {
                 next.setVisibility(View.INVISIBLE);
             }
         }
     }
 
+    /**
+     * Goes to the previous instruction step if possible.
+     */
     public void previousInstruction(View view) {
         if (currentInstruction > 0) {
-            if (currentInstruction == instructionIDs.length - 1) {
-                next.setVisibility(View.VISIBLE);
-            }
-
             currentInstruction = currentInstruction - 1;
             setInstructionToCurrentInstruction();
 
+            // if there are instruction steps after this, show the next button.
+            if (currentInstruction < instructionIDs.length - 1) {
+                next.setVisibility(View.VISIBLE);
+            }
+
+            // if this is the first instruction step, hide the previous button.
             if (currentInstruction == 0) {
-                prev.setVisibility(View.INVISIBLE);
+                previous.setVisibility(View.INVISIBLE);
             }
         }
     }
 
+    /**
+     * Changes the text to the new instruction.
+     */
     private void setInstructionToCurrentInstruction() {
         instruction.setText(instructionIDs[currentInstruction]);
     }

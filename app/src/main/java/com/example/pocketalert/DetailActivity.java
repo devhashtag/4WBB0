@@ -9,15 +9,25 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.util.Objects;
+import java.util.Random;
 
 import static com.example.pocketalert.MainActivity.EDIT_DETAILS_ACTIVITY_REQUEST_CODE;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private String id, name, address, phone, email, birthday;
     private TextView idView, nameView, addressView, phoneView, emailView, birthdayView;
     private boolean wasDataUpdated = false;
+    private double latitude, longitude;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +44,17 @@ public class DetailActivity extends AppCompatActivity {
 
         findViews();
         setTextViews();
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
+
+        // just so the location is different each time. replace with location of device.
+        Random random = new Random();
+        latitude = 51.844975 + random.nextDouble() - 0.5;
+        longitude = 4.927505 + random.nextDouble() - 0.5;
     }
 
     /**
@@ -134,6 +155,9 @@ public class DetailActivity extends AppCompatActivity {
         intent.putExtra("birthday", birthday);
     }
 
+    /**
+     * When the data has been edited, that info is sent to the main activity to be updated in the database.
+     */
     private void sendReply() {
         Intent replyIntent = new Intent();
 
@@ -145,5 +169,17 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         finish();
+    }
+
+    /**
+     * In this method map functions have to be preformed.
+     */
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(latitude, longitude))
+                .title(name));
+        // Automatically zooms in on the marker
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15));
     }
 }

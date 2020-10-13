@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/connectTitle"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
         android:layout_marginTop="@dimen/big_padding"
@@ -80,6 +80,7 @@
         android:layout_marginStart="@dimen/big_padding"
         android:layout_marginEnd="@dimen/big_padding"
         android:layout_marginBottom="@dimen/huge_padding"
+        android:backgroundTint="@color/generic_button"
         android:onClick="howToConnect"
         android:text="@string/how_to_connect_a_new_device"
         android:textColor="@color/mainText"

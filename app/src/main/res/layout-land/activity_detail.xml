@@ -56,7 +56,7 @@
         android:layout_marginEnd="@dimen/big_padding"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/mainText"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/map"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/addressIconDetail"
         app:layout_constraintTop_toBottomOf="@+id/nameDetail" />
@@ -81,7 +81,7 @@
         android:layout_marginEnd="@dimen/big_padding"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/mainText"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/map"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/phoneIconDetail"
         app:layout_constraintTop_toBottomOf="@+id/addressDetail" />
@@ -106,7 +106,7 @@
         android:layout_marginEnd="@dimen/big_padding"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/mainText"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/map"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/emailIconDetail"
         app:layout_constraintTop_toBottomOf="@+id/phoneDetail" />
@@ -131,7 +131,7 @@
         android:layout_marginEnd="@dimen/big_padding"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/mainText"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/map"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/bdayIconDetail"
         app:layout_constraintTop_toBottomOf="@+id/emailDetail" />
@@ -146,7 +146,7 @@
         android:backgroundTint="#00FFFFFF"
         android:drawableBottom="@android:drawable/ic_menu_edit"
         android:onClick="onEdit"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/map"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
@@ -154,13 +154,21 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/big_padding"
         android:layout_marginTop="@dimen/big_padding"
         android:layout_marginEnd="@dimen/big_padding"
         android:layout_marginBottom="@dimen/big_padding"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bdayDetail" />
+        app:layout_constraintStart_toEndOf="@+id/spacer"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/spacer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/map"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

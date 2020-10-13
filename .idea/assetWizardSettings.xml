@@ -79,7 +79,8 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="C:\Users\Philip\Documents\_School\TUe\Year 2\Q1\4WBB0 - Engineering design\icon v1.png" />
+                                                <entry key="imagePath" value="C:\Users\Philip\Documents\_School\TUe\Year 2\Q1\4WBB0 - Engineering design\Self Study Assignments\SSA11\Icon\Icon.png" />
+                                                <entry key="scalingPercent" value="59" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -111,7 +112,8 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="legacyIconShape" value="CIRCLE" />
+                                      <entry key="backgroundAssetType" value="COLOR" />
+                                      <entry key="backgroundColor" value="ce2029" />
                                     </map>
                                   </option>
                                 </PersistentState>

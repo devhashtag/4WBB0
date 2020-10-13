@@ -8,7 +8,7 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterActivity extends AppCompatActivity {
-//TODO improve the way the instruction text is shown.
+
     private EditText idInput;
 
     @Override
@@ -44,6 +44,9 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * When the how to connect to a new device button is pressed, go to the register instructions activity.
+     */
     public void howToConnect(View view) {
         Intent intent = new Intent(this, RegisterInstructionsActivity.class);
         startActivity(intent);
