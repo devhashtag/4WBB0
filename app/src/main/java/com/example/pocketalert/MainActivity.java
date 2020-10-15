@@ -1,5 +1,6 @@
 package com.example.pocketalert;
 
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -19,13 +20,16 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pocketalert.connect.RequestHelper;
 import com.example.pocketalert.database.User;
 import com.example.pocketalert.database.UserViewModel;
+import com.example.pocketalert.configuration.*;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     //TODO make activities landscape mode proof
+    private final RequestHelper requestHelper = RequestHelper.getInstance();
 
     // Request codes
     public static final int REGISTER_ACTIVITY_REQUEST_CODE = 69;
@@ -33,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     public static final int VIEW_DETAILS_ACTIVITY_REQUEST_CODE = 42; // The Answer to the Ultimate Question of Life, the Universe, and Everything
 
     public static boolean vibrationEnabled = true;
-    public static boolean serviceHasStarted = false;
     private UserViewModel userViewModel;
 
     @Override
@@ -51,12 +54,12 @@ public class MainActivity extends AppCompatActivity {
 
         // Update the cached copy of the users in the adapter.
         userViewModel.getAllUsers().observe(this, adapter::setUsers);
-        if(!serviceHasStarted){
-            startService();
-            serviceHasStarted = true;
-        }
+
+        // Always try to start the service (if it is already on, the start signal is ignored)
+        startService();
         load_Setting();
 
+        // For testing purposes, only temporary
         findViewById(R.id.btnStop).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,25 +106,58 @@ public class MainActivity extends AppCompatActivity {
             viewUser(id);
         }
     }
-    public void startService(){
-        Intent backgroundIntent = new Intent(this, ForegroundService.class);
-        backgroundIntent.setAction("START");
-        ContextCompat.startForegroundService(this, backgroundIntent);
+
+    /**
+     * Starts the service and identifies to the server
+     */
+    public void startService() {
+        // Start service
+        requestHelper.sendRequest(this, Action.Control.START_SERVICE, null);
+
+//        Intent backgroundIntent = new Intent(this, ForegroundService.class);
+//        backgroundIntent.setAction(Action.Control.START_SERVICE.toString());
+//        ContextCompat.startForegroundService(this, backgroundIntent);
+
+        // Check if we have stored a user ID
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String userID = preferences.getString("userID", null);
+
+        // Identify, or request an ID
+        if (userID == null) {
+            // Request ID
+            requestHelper.sendRequest(this, Action.Request.REQUEST_ID, (Message response) -> {
+                preferences
+                        .edit()
+                        .putString("userID", response.argument)
+                        .apply();
+            });
+//            Intent requestIntent = new Intent(this, ForegroundService.class);
+//            requestIntent.setAction(Action.Request.REQUEST_ID.toString());
+//            ContextCompat.startForegroundService(this, requestIntent);
+        } else {
+            // Identify
+            requestHelper.sendRequest(this, Action.Request.ID, userID, null);
+
+//            Intent identifyIntent = new Intent(this, ForegroundService.class);
+//            identifyIntent.setAction(Action.Request.ID.toString());
+//            identifyIntent.putExtra("argument", userID);
+//            ContextCompat.startForegroundService(this, identifyIntent);
+        }
     }
 
     public void stopService() {
-        Intent backgroundIntent = new Intent(this, ForegroundService.class);
-        backgroundIntent.setAction("STOP");
-        ContextCompat.startForegroundService(this, backgroundIntent);
+        requestHelper.sendRequest(this, Action.Control.STOP_SERVICE, null);
+//        Intent backgroundIntent = new Intent(this, ForegroundService.class);
+//        backgroundIntent.setAction(Action.Control.STOP_SERVICE.toString());
+//        ContextCompat.startForegroundService(this, backgroundIntent);
     }
-
 
     /**
      * When the FAB with the plus is clicked, go to the RegisterActivity.
      */
     public void addDevice(View view) {
-        Intent intent = new Intent(this, RegisterActivity.class);
-        startActivityForResult(intent, REGISTER_ACTIVITY_REQUEST_CODE);
+//        Intent intent = new Intent(this, RegisterActivity.class);
+//        startActivityForResult(intent, REGISTER_ACTIVITY_REQUEST_CODE);
     }
 
     /**
@@ -133,9 +169,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void viewUser(String id) {
-        Intent intent = new Intent(this, DetailActivity.class);
-        putExtrasDetails(intent, id);
-        startActivityForResult(intent, VIEW_DETAILS_ACTIVITY_REQUEST_CODE);
+//        Intent intent = new Intent(this, DetailActivity.class);
+//        putExtrasDetails(intent, id);
+//        startActivityForResult(intent, VIEW_DETAILS_ACTIVITY_REQUEST_CODE);
     }
 
     /**

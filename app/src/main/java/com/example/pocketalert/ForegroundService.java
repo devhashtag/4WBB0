@@ -1,5 +1,6 @@
 package com.example.pocketalert;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -8,21 +9,25 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
-import android.os.Message;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Queue;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.function.Function;
 
-import kotlin.reflect.KFunction;
 import okhttp3.*;
+
+import com.example.pocketalert.configuration.*;
 
 public class ForegroundService extends Service {
     private static final String TAG = "ForegroundService";
@@ -32,35 +37,43 @@ public class ForegroundService extends Service {
     private boolean isServiceStarted = false;
     private Executor executor = Executors.newSingleThreadExecutor();
 
-    public ForegroundService() {
-    }
+    // Used for passing the intents from the activity to the communication thread
+    private Queue<Intent> intentQueue = new ConcurrentLinkedQueue<Intent>();
+
+    public ForegroundService() { }
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(TAG, "onBind: ");
         return null;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand: startId=" + startId);
+        String action = intent.getAction();
 
-        if (intent != null) {
-            String action = intent.getAction();
+        // Short circuiting
+        if (! Action.contains(action) || Action.isResponse(action)) {
+            Log.e(TAG, "Action provided was not in the Action class or is a response: " + action);
+            return START_STICKY;
+        }
 
-            switch (action) {
-                case "START":
-                    startService();
-                    break;
-                case "STOP":
-                    stopService();
-                    break;
-                default:
-                    Log.d(TAG, "onStartCommand: This should never happen. Received intent with action=" + action);
-                    break;
-            }
-        } else {
-            Log.d(TAG, "onStartCommand: Received null intent");
+        // Forwarding requests
+        if (Action.isRequest(action)) {
+            intentQueue.add(intent);
+            return START_STICKY;
+        }
+
+        // Only start/stop are meaningful in this context
+        Action.Control controlAction  = Action.Control.valueOf(action);
+
+        switch (controlAction) {
+            case START_SERVICE:
+                startService();
+                break;
+            case STOP_SERVICE:
+                stopService();
+                break;
         }
 
         return START_STICKY;
@@ -70,10 +83,9 @@ public class ForegroundService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        Log.d(TAG, "The service has been created");
-
         Notification notification = createNotification();
         startForeground(1, notification);
+        Log.d(TAG, "The service has been created");
     }
 
     @Override
@@ -81,18 +93,15 @@ public class ForegroundService extends Service {
         super.onDestroy();
 
         stopService();
-
         Log.d(TAG, "The service has been destroyed");
-
-        Toast.makeText(this, "PocketAlert service destroyed", Toast.LENGTH_SHORT);
     }
 
+    @SuppressLint("WakelockTimeout")
     private void startService() {
         if (isServiceStarted) {
             return;
         }
 
-        Toast.makeText(this, "Starting the service task", Toast.LENGTH_SHORT);
         isServiceStarted = true;
 
         PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
@@ -116,10 +125,10 @@ public class ForegroundService extends Service {
             Log.d(TAG, "Exception occurred when shutting down service: " + exception.getMessage());
         }
 
-
         isServiceStarted = false;
     }
 
+    @NonNull
     private Notification createNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
@@ -155,35 +164,128 @@ public class ForegroundService extends Service {
                 .build();
     }
 
+    /**
+     *
+     * Handles communication with the Server.
+     * Should NOT be run the UI thread (it is threadsafe)
+     */
     private void run() {
-        OkHttpClient httpClient = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url("ws://192.168.2.11:50007/")
-                .build();
+        ConnectionHandler handler = new ConnectionHandler((@NotNull Throwable t, @Nullable Response response) -> {
+            Log.e(TAG, "Error in websocket connection: ", t);
 
-        WebSocketListener listener = new WebSocketClient(
-            (@NotNull String text) -> {
-                Log.e(TAG, "Message received: " + text) ;
-            },
-            (@NotNull Throwable t, @NotNull Response response) -> {
-                Log.e(TAG, "Error in websocket connection: ", t) ;
-            });
-        WebSocket webSocket = httpClient.newWebSocket(request, listener);
+            // Notify app of error
+            Intent intent = new Intent(Action.Control.CONNECTION_ERROR.toString());
+            intent.putExtra("Error", t.toString());
 
-        webSocket.send("Ping");
-        httpClient.dispatcher().executorService().shutdown();
-
-        while (isServiceStarted) {
-            try {
-                Log.d(TAG, "Service working");
-                Thread.sleep(1000);
-            } catch (InterruptedException exception) {
-                Log.d(TAG, "work interrupted");
+            if (response != null) {
+                intent.putExtra("Response", response.toString());
             }
+
+            sendBroadcast(intent);
+        },
+        (@NotNull WebSocket webSocket, @NotNull Queue<Message> messageQueue) -> {
+            // Handle intents
+            while (! intentQueue.isEmpty()) {
+                Intent intent = intentQueue.poll();
+                String action = intent.getAction();
+                String messageId = intent.getStringExtra("uuid");
+
+                Log.d(TAG, "Received Intent: " + action);
+
+                // Directly create message if the action is in the Response enum
+                if (Action.isRequest(action)) {
+                    Message message =
+                            messageId == null
+                            ? new Message()
+                            : new Message(messageId);
+
+                    message.command = action;
+                    message.argument = intent.getStringExtra("argument");
+
+                    webSocket.send(message.toString());
+                } else {
+                    Log.e(TAG, "Received intent that was not a request: " + action);
+                }
+            }
+
+            // Handle messages
+            while (! messageQueue.isEmpty()) {
+                Message message = messageQueue.poll();
+
+                Intent intent = new Intent(message.command);
+                intent.putExtra("argument", message.argument);
+                intent.putExtra("uuid", message.getMessageId());
+
+                sendBroadcast(intent);
+            }
+
+            return isServiceStarted;
+        });
+
+        handler.run();
+    }
+
+    /**
+     * Adds a prefix to intent, so that we can easily filter it
+     * @param intent intent to be broadcasted
+     */
+    private void broadcast(Intent intent) {
+        String action = intent.getAction();
+        if (action != null) {
+            intent.setAction("POCKETALERT." + action);
         }
 
-        webSocket.close(1001,"Service stopped" );
-        Log.d(TAG, "Work finished (stopped)");
+        sendBroadcast(intent);
+    }
+
+    /**
+     *
+     * Helper classes and interfaces for the abstraction from OkHttp
+     */
+    private class ConnectionHandler {
+        private ErrorHandler errorHandler;
+        private CommunicationLoop loop;
+
+        private Queue<Message> messageQueue = new ConcurrentLinkedQueue<Message>();
+
+        public ConnectionHandler(ErrorHandler errorHandler, CommunicationLoop loop) {
+            this.errorHandler = errorHandler;
+            this.loop = loop;
+        }
+
+        public void run() {
+            OkHttpClient httpClient = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url("ws://192.168.2.11:50007")
+                    .build();
+
+            MessageHandler handler = (@NotNull String text) -> {
+                Message message = Message.fromString(text);
+                messageQueue.add(message);
+            };
+
+            WebSocketListener listener = new WebSocketClient(handler, errorHandler);
+            WebSocket webSocket = httpClient.newWebSocket(request, listener);
+            httpClient.dispatcher().executorService().shutdown();
+
+            boolean isRunning = true;
+
+            while (isRunning) {
+                // Execute function
+                isRunning = loop.loop(webSocket, messageQueue);
+
+                // Prevent 100% CPU-usage (runs < 20 times a second)
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException exception) {
+                    Log.e(TAG, "work interrupted");
+                }
+            }
+
+            // Clean up
+            webSocket.close(1001,"Service stopped" );
+            Log.d(TAG, "Work finished (stopped)");
+        }
     }
 
     private class WebSocketClient extends WebSocketListener {
@@ -227,6 +329,10 @@ public class ForegroundService extends Service {
     }
 
     private interface ErrorHandler {
-        void onError(@NotNull Throwable t, @NotNull Response repsonse);
+        void onError(@NotNull Throwable t, @Nullable Response response);
+    }
+
+    private interface CommunicationLoop {
+        boolean loop(@NotNull WebSocket webSocket, @NotNull Queue<Message> messageQueue);
     }
 }
