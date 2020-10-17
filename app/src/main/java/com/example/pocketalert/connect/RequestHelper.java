@@ -3,65 +3,64 @@ package com.example.pocketalert.connect;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
 import com.example.pocketalert.ForegroundService;
 import com.example.pocketalert.Message;
-import com.example.pocketalert.configuration.Action;
+import com.example.pocketalert.configuration.Command;
 
 import java.util.HashMap;
 import java.util.UUID;
 
 /**
  * Singleton class
+ * TODO figure out how to remove requests when switching from activity
  */
 public class RequestHelper extends BroadcastReceiver {
-    private static final String TAG = "REQUESTHELPER";
-
     public interface Callback {
         void onResponse(Message message);
     }
 
-    public interface TimeoutCallback {
-        void onTimeout();
-    }
+    private static final String TAG = "REQUESTHELPER";
 
     // Holds the singleton instance
     private static RequestHelper instance;
 
+    // Holds the callbacks
     private HashMap<String, Callback> requests = new HashMap<>();
 
     // Make constructor private
     private RequestHelper() { }
 
-    /**
-     * Sends request to the foreground-service
-     * @param context App context
-     * @param action Action to perform
-     */
-    public void sendRequest(Context context, Action.Control action, Callback callback) {
-        sendRequest(context, action.toString(), null, callback);
-    }
-
-    /**
-     * Sends request to the foreground-service
-     * @param context App context
-     * @param action Action to perform
-     */
-    public void sendRequest(Context context, Action.Request action, Callback callback) {
-        sendRequest(context, action.toString(), null, callback);
-    }
-
-    /**
-     * Sends request to the foreground-service
-     * @param context App context
-     * @param action Action to perform
-     */
-    public void sendRequest(Context context, Action.Request action, String argument, Callback callback) {
-        sendRequest(context, action.toString(), argument, callback);
-    }
+//    /**
+//     * Sends request to the foreground-service
+//     * @param context App context
+//     * @param action Action to perform
+//     */
+//    public void sendRequest(Context context, Command.Control action, Callback callback) {
+//        sendRequest(context, action.toString(), null, callback);
+//    }
+//
+//    /**
+//     * Sends request to the foreground-service
+//     * @param context App context
+//     * @param action Action to perform
+//     */
+//    public void sendRequest(Context context, Command.Request action, Callback callback) {
+//        sendRequest(context, action.toString(), null, callback);
+//    }
+//
+//    /**
+//     * Sends request to the foreground-service
+//     * @param context App context
+//     * @param action Action to perform
+//     */
+//    public void sendRequest(Context context, Command.Request action, String argument, Callback callback) {
+//        sendRequest(context, action.toString(), argument, callback);
+//    }
 
     /**
      * Sends request to the foreground-service
@@ -69,7 +68,7 @@ public class RequestHelper extends BroadcastReceiver {
      * @param action The action to put as header (Action.Control or Action.Request)
      * @param argument Optional argument or data
      */
-    private void sendRequest(Context context, String action, String argument, Callback callback) {
+    public void sendRequest(Context context, String scope, String action, String argument, Callback callback) {
         Intent intent = new Intent(context, ForegroundService.class);
         intent.setAction(action);
 
@@ -78,36 +77,57 @@ public class RequestHelper extends BroadcastReceiver {
         }
 
         UUID uuid = UUID.randomUUID();
+        String messageId = scope + uuid.toString();
 
-        intent.putExtra("uuid", uuid.toString());
+        intent.putExtra("uuid", messageId);
 
         if (callback != null) {
-            requests.put(uuid.toString(), callback);
+            requests.put(messageId, callback);
         }
 
         ContextCompat.startForegroundService(context, intent);
     }
 
+    /**
+     * Creates a request scope
+     * @return returns scopeId
+     */
+    public String createScope() {
+        return UUID.randomUUID().toString();
+    }
+
+    /**
+     * Removes all callbacks belonging to scopeId
+     * @param scopeId
+     */
+    public void closeScope(String scopeId) {
+        for (String key : requests.keySet()) {
+            if (key.startsWith(scopeId)) {
+                requests.remove(key);
+            }
+        }
+    }
+
+    // Gets called when an intent is received
+    // Intents are provided by the IntentReceiver
     @Override
     public void onReceive(Context context, Intent intent) {
-        final String prefix = "POCKETALERT.";
         // Make sure the intent comes from the service
-        if (intent == null || intent.getAction() == null || ! intent.getAction().startsWith(prefix)) {
+        if (intent == null || ! Command.ACTION.equals(intent.getAction())) {
             return;
         }
 
         // Retrieve callback
+        String action = intent.getStringExtra("action");
+        String argument = intent.getStringExtra("argument");
         String messageId = intent.getStringExtra("uuid");
+
         Callback callback = requests.get(messageId);
 
         if (callback == null) {
-            Log.e(TAG, "Received intent that does not belong to request: " + intent.toString());
+            Log.d(TAG, "Received intent that does not belong to request: " + intent.toString());
             return;
         }
-
-        String action = intent.getAction();
-        String argument = intent.getStringExtra("argument");
-        action = action.substring(prefix.length());
 
         Message message = new Message();
         message.command = action;
@@ -124,9 +144,13 @@ public class RequestHelper extends BroadcastReceiver {
      * Retrieve the singleton instance
      * @return Singleton RequestHelper instance
      */
-    public static synchronized RequestHelper getInstance() {
+    public static synchronized RequestHelper getInstance(Context context) {
         if (instance == null) {
             instance = new RequestHelper();
+            context.getApplicationContext().registerReceiver(
+                instance,
+                new IntentFilter(Command.ACTION)
+            );
         }
 
         return instance;

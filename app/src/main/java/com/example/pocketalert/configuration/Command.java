@@ -1,6 +1,8 @@
 package com.example.pocketalert.configuration;
 
-public class Action {
+public class Command {
+    public final static String ACTION = "pocketalert.action";
+
     public enum Request {
         REQUEST_ID,
         ID,
@@ -11,7 +13,9 @@ public class Action {
         START_LIVE_LOCATION,
         STOP_LIVE_LOCATION,
         ADD_DEVICE,
-        UPDATE_DEVICE_INFORMATION
+        UPDATE_DEVICE_INFORMATION,
+        SEND_MEDICINE_REMINDER,
+        REMOVE_MEDICINE_REMINDER
     }
 
     public enum Response {

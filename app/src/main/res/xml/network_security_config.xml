@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
-<!--        Local address (for development purposes only) -->
+<!--        Local addresses (for development purposes only) -->
         <domain includeSubdomains="true">192.168.2.11</domain>
+        <domain includeSubdomains="true">192.168.2.55</domain>
 <!--        Public address-->
         <domain includeSubdomains="true">84.105.198.134</domain>
     </domain-config>

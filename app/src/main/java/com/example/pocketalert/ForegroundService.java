@@ -12,7 +12,6 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -20,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Queue;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -53,19 +51,22 @@ public class ForegroundService extends Service {
         String action = intent.getAction();
 
         // Short circuiting
-        if (! Action.contains(action) || Action.isResponse(action)) {
+        if (! Command.contains(action) ||
+                (Command.isResponse(action) &&
+                !Command.isRequest(action) &&
+                !Command.isControl(action))) {
             Log.e(TAG, "Action provided was not in the Action class or is a response: " + action);
             return START_STICKY;
         }
 
         // Forwarding requests
-        if (Action.isRequest(action)) {
+        if (Command.isRequest(action)) {
             intentQueue.add(intent);
             return START_STICKY;
         }
 
         // Only start/stop are meaningful in this context
-        Action.Control controlAction  = Action.Control.valueOf(action);
+        Command.Control controlAction  = Command.Control.valueOf(action);
 
         switch (controlAction) {
             case START_SERVICE:
@@ -171,14 +172,15 @@ public class ForegroundService extends Service {
      */
     private void run() {
         ConnectionHandler handler = new ConnectionHandler((@NotNull Throwable t, @Nullable Response response) -> {
-            Log.e(TAG, "Error in websocket connection: ", t);
+            Log.e(TAG, "Error in websocket connection: " + t.getMessage());
 
             // Notify app of error
-            Intent intent = new Intent(Action.Control.CONNECTION_ERROR.toString());
-            intent.putExtra("Error", t.toString());
+            Intent intent = new Intent(Command.ACTION);
+            intent.putExtra("action", Command.Control.CONNECTION_ERROR.toString());
+            intent.putExtra("error", t.toString());
 
             if (response != null) {
-                intent.putExtra("Response", response.toString());
+                intent.putExtra("response", response.toString());
             }
 
             sendBroadcast(intent);
@@ -190,10 +192,8 @@ public class ForegroundService extends Service {
                 String action = intent.getAction();
                 String messageId = intent.getStringExtra("uuid");
 
-                Log.d(TAG, "Received Intent: " + action);
-
                 // Directly create message if the action is in the Response enum
-                if (Action.isRequest(action)) {
+                if (Command.isRequest(action)) {
                     Message message =
                             messageId == null
                             ? new Message()
@@ -201,6 +201,7 @@ public class ForegroundService extends Service {
 
                     message.command = action;
                     message.argument = intent.getStringExtra("argument");
+
 
                     webSocket.send(message.toString());
                 } else {
@@ -212,7 +213,8 @@ public class ForegroundService extends Service {
             while (! messageQueue.isEmpty()) {
                 Message message = messageQueue.poll();
 
-                Intent intent = new Intent(message.command);
+                Intent intent = new Intent(Command.ACTION);
+                intent.putExtra("action", message.command);
                 intent.putExtra("argument", message.argument);
                 intent.putExtra("uuid", message.getMessageId());
 
@@ -223,19 +225,6 @@ public class ForegroundService extends Service {
         });
 
         handler.run();
-    }
-
-    /**
-     * Adds a prefix to intent, so that we can easily filter it
-     * @param intent intent to be broadcasted
-     */
-    private void broadcast(Intent intent) {
-        String action = intent.getAction();
-        if (action != null) {
-            intent.setAction("POCKETALERT." + action);
-        }
-
-        sendBroadcast(intent);
     }
 
     /**
@@ -256,7 +245,7 @@ public class ForegroundService extends Service {
         public void run() {
             OkHttpClient httpClient = new OkHttpClient();
             Request request = new Request.Builder()
-                    .url("ws://192.168.2.11:50007")
+                    .url("ws://84.105.198.134:50007/websocket")
                     .build();
 
             MessageHandler handler = (@NotNull String text) -> {

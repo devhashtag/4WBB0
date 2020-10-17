@@ -19,27 +19,30 @@ public class Message {
         messageId = UUID.randomUUID().toString();
     }
 
-    public static Message fromString(String text) {
-        Message message = new Message();
+    public static Message fromString(String text) throws IllegalArgumentException {
+        // Get ID
         int index = text.indexOf('\n');
 
         if (index == -1) {
-            message.command = text;
             Log.e("Message", "Received a message without messageId: " + text);
-            return message;
+            throw new IllegalArgumentException("Message must contain an Id");
         }
 
-        message.command = text.substring(0, index);
+        Message message = new Message(text.substring(0, index));
+
+        // Get command
         text = text.substring(index + 1);
         index = text.indexOf('\n');
 
         if (index == -1) {
-            message.messageId = text;
+            message.command = text;
             return message;
         }
 
-        message.messageId = text.substring(0, index);
+        // Get argument
+        message.command = text.substring(0, index);
         message.argument = text.substring(index + 1);
+
         return message;
     }
 
@@ -50,6 +53,8 @@ public class Message {
     @NonNull
     @Override
     public String toString() {
-        return command + "\n" + messageId + "\n" + argument;
+        return argument == null
+                ? messageId + "\n" + command
+                : messageId + "\n" + command + "\n" + argument;
     }
 }

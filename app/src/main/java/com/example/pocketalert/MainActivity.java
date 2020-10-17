@@ -1,10 +1,10 @@
 package com.example.pocketalert;
 
-import android.app.DownloadManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,24 +12,22 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pocketalert.connect.RequestHelper;
+import com.example.pocketalert.connect.ConnectedActivity;
 import com.example.pocketalert.database.User;
 import com.example.pocketalert.database.UserViewModel;
 import com.example.pocketalert.configuration.*;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ConnectedActivity {
+    public static final String TAG = "MainActivity";
     //TODO make activities landscape mode proof
-    private final RequestHelper requestHelper = RequestHelper.getInstance();
 
     // Request codes
     public static final int REGISTER_ACTIVITY_REQUEST_CODE = 69;
@@ -58,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
         // Always try to start the service (if it is already on, the start signal is ignored)
         startService();
         load_Setting();
+
+        sendRequest(Command.Request.GET_DEVICES_INFORMATION, null, (Message response) -> {
+           Log.d(TAG, "Response from server: " + response.argument);
+        });
 
         // For testing purposes, only temporary
         findViewById(R.id.btnStop).setOnClickListener(new View.OnClickListener() {
@@ -112,11 +114,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void startService() {
         // Start service
-        requestHelper.sendRequest(this, Action.Control.START_SERVICE, null);
-
-//        Intent backgroundIntent = new Intent(this, ForegroundService.class);
-//        backgroundIntent.setAction(Action.Control.START_SERVICE.toString());
-//        ContextCompat.startForegroundService(this, backgroundIntent);
+        sendRequest(Command.Control.START_SERVICE, null, null);
 
         // Check if we have stored a user ID
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -125,31 +123,23 @@ public class MainActivity extends AppCompatActivity {
         // Identify, or request an ID
         if (userID == null) {
             // Request ID
-            requestHelper.sendRequest(this, Action.Request.REQUEST_ID, (Message response) -> {
+            sendRequest(Command.Request.REQUEST_ID, null, (Message response) -> {
                 preferences
                         .edit()
                         .putString("userID", response.argument)
                         .apply();
-            });
-//            Intent requestIntent = new Intent(this, ForegroundService.class);
-//            requestIntent.setAction(Action.Request.REQUEST_ID.toString());
-//            ContextCompat.startForegroundService(this, requestIntent);
-        } else {
-            // Identify
-            requestHelper.sendRequest(this, Action.Request.ID, userID, null);
 
-//            Intent identifyIntent = new Intent(this, ForegroundService.class);
-//            identifyIntent.setAction(Action.Request.ID.toString());
-//            identifyIntent.putExtra("argument", userID);
-//            ContextCompat.startForegroundService(this, identifyIntent);
+                Log.d(TAG, "Id: " + response.argument);
+            });
+        } else {
+            Log.d(TAG, "Id exists: " + userID);
+            // Identify
+            sendRequest(Command.Request.ID, userID, null);
         }
     }
 
     public void stopService() {
-        requestHelper.sendRequest(this, Action.Control.STOP_SERVICE, null);
-//        Intent backgroundIntent = new Intent(this, ForegroundService.class);
-//        backgroundIntent.setAction(Action.Control.STOP_SERVICE.toString());
-//        ContextCompat.startForegroundService(this, backgroundIntent);
+        sendRequest(Command.Control.STOP_SERVICE, null, null);
     }
 
     /**
