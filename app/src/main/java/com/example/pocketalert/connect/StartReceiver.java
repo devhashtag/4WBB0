@@ -1,10 +1,11 @@
-package com.example.pocketalert;
+package com.example.pocketalert.connect;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
+
+import com.example.pocketalert.connect.ForegroundService;
 
 public class StartReceiver extends BroadcastReceiver {
 

@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pocketalert.connect.ConnectedActivity;
+import com.example.pocketalert.connect.Message;
 import com.example.pocketalert.database.User;
 import com.example.pocketalert.database.UserViewModel;
 import com.example.pocketalert.configuration.*;
@@ -28,11 +29,6 @@ import java.util.Objects;
 public class MainActivity extends ConnectedActivity {
     public static final String TAG = "MainActivity";
     //TODO make activities landscape mode proof
-
-    // Request codes
-    public static final int REGISTER_ACTIVITY_REQUEST_CODE = 69;
-    public static final int EDIT_DETAILS_ACTIVITY_REQUEST_CODE = 420;
-    public static final int VIEW_DETAILS_ACTIVITY_REQUEST_CODE = 42; // The Answer to the Ultimate Question of Life, the Universe, and Everything
 
     public static boolean vibrationEnabled = true;
     private UserViewModel userViewModel;
@@ -56,18 +52,6 @@ public class MainActivity extends ConnectedActivity {
         // Always try to start the service (if it is already on, the start signal is ignored)
         startService();
         load_Setting();
-
-        sendRequest(Command.Request.GET_DEVICES_INFORMATION, null, (Message response) -> {
-           Log.d(TAG, "Response from server: " + response.argument);
-        });
-
-        // For testing purposes, only temporary
-        findViewById(R.id.btnStop).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopService();
-            }
-        });
     }
 
     /**
@@ -80,33 +64,35 @@ public class MainActivity extends ConnectedActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REGISTER_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            // Adds a new user to the database
-            String id = data.getStringExtra("id");
-            if (id != null) {
-                User user = new User(id);
-                userViewModel.insert(user);
-            }
-        } else if (requestCode == VIEW_DETAILS_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            // Updates the users data
-            String id = data.getStringExtra("id");
-            User user = new User(Objects.requireNonNull(id));
-            user.setName(Objects.requireNonNull(data.getStringExtra("name")));
-            user.setAddress(Objects.requireNonNull(data.getStringExtra("address")));
-            user.setPhone(Objects.requireNonNull(data.getStringExtra("phone")));
-            user.setEmail(Objects.requireNonNull(data.getStringExtra("email")));
-            user.setBirthday(Objects.requireNonNull(data.getStringExtra("birthday")));
-            userViewModel.update(user);
+        // Results don't go in here anymore, but are sent in the callback of a request
 
-            //TODO: updating still occasionally takes longer resulting in the old info being show
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            viewUser(id);
-        }
+//        if (requestCode == REGISTER_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+//            // Adds a new user to the database
+//            String id = data.getStringExtra("id");
+//            if (id != null) {
+//                User user = new User(id);
+//                userViewModel.insert(user);
+//            }
+//        } else if (requestCode == VIEW_DETAILS_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+//            // Updates the users data
+//            String id = data.getStringExtra("id");
+//            User user = new User(Objects.requireNonNull(id));
+//            user.setName(Objects.requireNonNull(data.getStringExtra("name")));
+//            user.setAddress(Objects.requireNonNull(data.getStringExtra("address")));
+//            user.setPhone(Objects.requireNonNull(data.getStringExtra("phone")));
+//            user.setEmail(Objects.requireNonNull(data.getStringExtra("email")));
+//            user.setBirthday(Objects.requireNonNull(data.getStringExtra("birthday")));
+//            userViewModel.update(user);
+//
+//            //TODO: updating still occasionally takes longer resulting in the old info being show
+//            try {
+//                Thread.sleep(100);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//
+//            viewUser(id);
+//        }
     }
 
     /**
@@ -132,7 +118,6 @@ public class MainActivity extends ConnectedActivity {
                 Log.d(TAG, "Id: " + response.argument);
             });
         } else {
-            Log.d(TAG, "Id exists: " + userID);
             // Identify
             sendRequest(Command.Request.ID, userID, null);
         }
@@ -186,7 +171,6 @@ public class MainActivity extends ConnectedActivity {
     public void deleteUser(View view) {
         Button deleteButton = (Button) view;
         userViewModel.deleteById(deleteButton.getText().toString());
-
     }
 
     @Override

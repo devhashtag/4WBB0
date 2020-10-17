@@ -19,16 +19,16 @@
         android:networkSecurityConfig="@xml/network_security_config">
 
         <service
-            android:name=".ForegroundService"
+            android:name=".connect.ForegroundService"
             android:enabled="true"
             android:exported="true" />
 
         <activity
             android:name=".RegisterInstructionsActivity"
-            android:parentActivityName=".RegisterActivity" />
+            android:parentActivityName=".connect.RegisterActivity" />
         <activity android:name=".EditDetailsActivity" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".connect.RegisterActivity"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".HistoryActivity"
@@ -63,17 +63,12 @@
 
         <receiver
             android:enabled="true"
-            android:name=".StartReceiver">
+            android:name=".connect.StartReceiver">
 
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-
-        <service
-            android:name=".backgroundActivity"
-            android:enabled="true"
-            android:exported="false" />
     </application>
 
 </manifest>

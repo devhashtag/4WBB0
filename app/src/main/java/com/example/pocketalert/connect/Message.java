@@ -1,4 +1,4 @@
-package com.example.pocketalert;
+package com.example.pocketalert.connect;
 
 import android.util.Log;
 

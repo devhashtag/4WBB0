@@ -8,8 +8,6 @@ import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
-import com.example.pocketalert.ForegroundService;
-import com.example.pocketalert.Message;
 import com.example.pocketalert.configuration.Command;
 
 import java.util.HashMap;

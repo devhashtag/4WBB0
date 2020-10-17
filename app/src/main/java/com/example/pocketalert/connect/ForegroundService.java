@@ -1,4 +1,4 @@
-package com.example.pocketalert;
+package com.example.pocketalert.connect;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -25,6 +25,7 @@ import java.util.concurrent.Executors;
 
 import okhttp3.*;
 
+import com.example.pocketalert.MainActivity;
 import com.example.pocketalert.configuration.*;
 
 public class ForegroundService extends Service {

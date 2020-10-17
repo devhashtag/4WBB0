@@ -11,8 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Objects;
 
-import static com.example.pocketalert.MainActivity.EDIT_DETAILS_ACTIVITY_REQUEST_CODE;
-
 public class DetailActivity extends AppCompatActivity {
 
     private String id, name, address, phone, email, birthday;
@@ -83,18 +81,19 @@ public class DetailActivity extends AppCompatActivity {
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // Results dont go in here
 
-        if (requestCode == EDIT_DETAILS_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            if (extras != null) {
-                if (wasUpdated(extras)) {
-                    assignValues(extras);
-                    setTextViews();
-                    wasDataUpdated = true;
-                    sendReply();
-                }
-            }
-        }
+//        if (requestCode == EDIT_DETAILS_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+//            Bundle extras = data.getExtras();
+//            if (extras != null) {
+//                if (wasUpdated(extras)) {
+//                    assignValues(extras);
+//                    setTextViews();
+//                    wasDataUpdated = true;
+//                    sendReply();
+//                }
+//            }
+//        }
     }
 
     /**
@@ -115,9 +114,9 @@ public class DetailActivity extends AppCompatActivity {
      * When the edit button is pressed, go to the EditDetailsActivity.
      */
     public void onEdit(View view) {
-        Intent intent = new Intent(this, EditDetailsActivity.class);
-        putExtrasDetails(intent);
-        startActivityForResult(intent, EDIT_DETAILS_ACTIVITY_REQUEST_CODE);
+//        Intent intent = new Intent(this, EditDetailsActivity.class);
+//        putExtrasDetails(intent);
+//        startActivityForResult(intent, EDIT_DETAILS_ACTIVITY_REQUEST_CODE);
     }
 
     /**
