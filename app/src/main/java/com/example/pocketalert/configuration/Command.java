@@ -24,6 +24,7 @@ public class Command {
         DEVICE_HISTORY,
         DEVICE_LOCATION,
         LIVE_LOCATION,
+        DEVICE_REMOVED,
         ALERT,
         CANCEL_ALERT,
         BAD_REQUEST,

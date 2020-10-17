@@ -33,33 +33,6 @@ public class RequestHelper extends BroadcastReceiver {
     // Make constructor private
     private RequestHelper() { }
 
-//    /**
-//     * Sends request to the foreground-service
-//     * @param context App context
-//     * @param action Action to perform
-//     */
-//    public void sendRequest(Context context, Command.Control action, Callback callback) {
-//        sendRequest(context, action.toString(), null, callback);
-//    }
-//
-//    /**
-//     * Sends request to the foreground-service
-//     * @param context App context
-//     * @param action Action to perform
-//     */
-//    public void sendRequest(Context context, Command.Request action, Callback callback) {
-//        sendRequest(context, action.toString(), null, callback);
-//    }
-//
-//    /**
-//     * Sends request to the foreground-service
-//     * @param context App context
-//     * @param action Action to perform
-//     */
-//    public void sendRequest(Context context, Command.Request action, String argument, Callback callback) {
-//        sendRequest(context, action.toString(), argument, callback);
-//    }
-
     /**
      * Sends request to the foreground-service
      * @param context Context passed from activity
@@ -123,7 +96,7 @@ public class RequestHelper extends BroadcastReceiver {
         Callback callback = requests.get(messageId);
 
         if (callback == null) {
-            Log.d(TAG, "Received intent that does not belong to request: " + intent.toString());
+            Log.d(TAG, "Received intent that does not belong to request: " + action);
             return;
         }
 
@@ -133,9 +106,11 @@ public class RequestHelper extends BroadcastReceiver {
 
         callback.onResponse(message);
 
-        // TODO: Figure out how to handle multiple responses on a single request
-        // Like live location sharing
-        requests.remove(messageId);
+        // Live location is a continuous source, so we should not remove
+        // the callback in case such a message comes through
+        if (! Command.Response.LIVE_LOCATION.toString().equals(message.command)) {
+            requests.remove(messageId);
+        }
     }
 
     /**

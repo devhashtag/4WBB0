@@ -25,6 +25,7 @@ import java.util.concurrent.Executors;
 
 import okhttp3.*;
 
+import com.example.pocketalert.DetailActivity;
 import com.example.pocketalert.MainActivity;
 import com.example.pocketalert.configuration.*;
 
@@ -214,6 +215,15 @@ public class ForegroundService extends Service {
             while (! messageQueue.isEmpty()) {
                 Message message = messageQueue.poll();
 
+                if (Command.Response.ALERT.toString().equals(message.command)) {
+                    // TODO: send extras
+                    Log.d(TAG, "Received alert");
+                    Intent intent = new Intent(this, DetailActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    continue;
+                }
+
                 Intent intent = new Intent(Command.ACTION);
                 intent.putExtra("action", message.command);
                 intent.putExtra("argument", message.argument);
@@ -246,7 +256,8 @@ public class ForegroundService extends Service {
         public void run() {
             OkHttpClient httpClient = new OkHttpClient();
             Request request = new Request.Builder()
-                    .url("ws://84.105.198.134:50007/websocket")
+//                    .url("ws://84.105.198.134:50007/websocket")
+                    .url("ws://192.168.2.55:5007/websocket")
                     .build();
 
             MessageHandler handler = (@NotNull String text) -> {
