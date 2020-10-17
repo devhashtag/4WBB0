@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -11,28 +12,25 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pocketalert.connect.ConnectedActivity;
+import com.example.pocketalert.connect.Message;
 import com.example.pocketalert.database.User;
 import com.example.pocketalert.database.UserViewModel;
+import com.example.pocketalert.configuration.*;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
-
-    // Request codes
-    public static final int REGISTER_ACTIVITY_REQUEST_CODE = 69;
-    public static final int EDIT_DETAILS_ACTIVITY_REQUEST_CODE = 420;
-    public static final int VIEW_DETAILS_ACTIVITY_REQUEST_CODE = 42; // The Answer to the Ultimate Question of Life, the Universe, and Everything
+public class MainActivity extends ConnectedActivity {
+    public static final String TAG = "MainActivity";
+    //TODO make activities landscape mode proof
 
     public static boolean vibrationEnabled = true;
-    public static boolean serviceHasStarted = false;
     private UserViewModel userViewModel;
 
     @Override
@@ -50,10 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Update the cached copy of the users in the adapter.
         userViewModel.getAllUsers().observe(this, adapter::setUsers);
-        if(!serviceHasStarted){
-            startService();
-            serviceHasStarted = true;
-        }
+
+        // Always try to start the service (if it is already on, the start signal is ignored)
+        startService();
         load_Setting();
     }
 
@@ -67,45 +64,75 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REGISTER_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            // Adds a new user to the database
-            String id = data.getStringExtra("id");
-            if (id != null) {
-                User user = new User(id);
-                userViewModel.insert(user);
-            }
-        } else if (requestCode == VIEW_DETAILS_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            // Updates the users data
-            String id = data.getStringExtra("id");
-            User user = new User(Objects.requireNonNull(id));
-            user.setName(Objects.requireNonNull(data.getStringExtra("name")));
-            user.setAddress(Objects.requireNonNull(data.getStringExtra("address")));
-            user.setPhone(Objects.requireNonNull(data.getStringExtra("phone")));
-            user.setEmail(Objects.requireNonNull(data.getStringExtra("email")));
-            user.setBirthday(Objects.requireNonNull(data.getStringExtra("birthday")));
-            userViewModel.update(user);
+        // Results don't go in here anymore, but are sent in the callback of a request
 
-            // updating still occasionally takes longer resulting in the old info being show
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//        if (requestCode == REGISTER_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+//            // Adds a new user to the database
+//            String id = data.getStringExtra("id");
+//            if (id != null) {
+//                User user = new User(id);
+//                userViewModel.insert(user);
+//            }
+//        } else if (requestCode == VIEW_DETAILS_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+//            // Updates the users data
+//            String id = data.getStringExtra("id");
+//            User user = new User(Objects.requireNonNull(id));
+//            user.setName(Objects.requireNonNull(data.getStringExtra("name")));
+//            user.setAddress(Objects.requireNonNull(data.getStringExtra("address")));
+//            user.setPhone(Objects.requireNonNull(data.getStringExtra("phone")));
+//            user.setEmail(Objects.requireNonNull(data.getStringExtra("email")));
+//            user.setBirthday(Objects.requireNonNull(data.getStringExtra("birthday")));
+//            userViewModel.update(user);
+//
+//            //TODO: updating still occasionally takes longer resulting in the old info being show
+//            try {
+//                Thread.sleep(100);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//
+//            viewUser(id);
+//        }
+    }
 
-            viewUser(id);
+    /**
+     * Starts the service and identifies to the server
+     */
+    public void startService() {
+        // Start service
+        sendRequest(Command.Control.START_SERVICE, null, null);
+
+        // Check if we have stored a user ID
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String userID = preferences.getString("userID", null);
+
+        // Identify, or request an ID
+        if (userID == null) {
+            // Request ID
+            sendRequest(Command.Request.REQUEST_ID, null, (Message response) -> {
+                preferences
+                        .edit()
+                        .putString("userID", response.argument)
+                        .apply();
+
+                Log.d(TAG, "Id: " + response.argument);
+            });
+        } else {
+            // Identify
+            sendRequest(Command.Request.ID, userID, null);
         }
     }
-    public void startService(){
-        Intent backgroundIntent = new Intent(this,backgroundActivity.class);
 
-        ContextCompat.startForegroundService(this,backgroundIntent);
+    public void stopService() {
+        sendRequest(Command.Control.STOP_SERVICE, null, null);
     }
+
     /**
      * When the FAB with the plus is clicked, go to the RegisterActivity.
      */
     public void addDevice(View view) {
-        Intent intent = new Intent(this, RegisterActivity.class);
-        startActivityForResult(intent, REGISTER_ACTIVITY_REQUEST_CODE);
+//        Intent intent = new Intent(this, RegisterActivity.class);
+//        startActivityForResult(intent, REGISTER_ACTIVITY_REQUEST_CODE);
     }
 
     /**
@@ -117,9 +144,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void viewUser(String id) {
-        Intent intent = new Intent(this, DetailActivity.class);
-        putExtrasDetails(intent, id);
-        startActivityForResult(intent, VIEW_DETAILS_ACTIVITY_REQUEST_CODE);
+//        Intent intent = new Intent(this, DetailActivity.class);
+//        putExtrasDetails(intent, id);
+//        startActivityForResult(intent, VIEW_DETAILS_ACTIVITY_REQUEST_CODE);
     }
 
     /**
@@ -144,7 +171,6 @@ public class MainActivity extends AppCompatActivity {
     public void deleteUser(View view) {
         Button deleteButton = (Button) view;
         userViewModel.deleteById(deleteButton.getText().toString());
-
     }
 
     @Override
