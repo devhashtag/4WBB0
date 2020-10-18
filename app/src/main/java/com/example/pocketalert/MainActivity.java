@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pocketalert.connect.ConnectedActivity;
 import com.example.pocketalert.connect.Message;
+import com.example.pocketalert.connect.RegisterActivity;
 import com.example.pocketalert.database.User;
 import com.example.pocketalert.database.UserViewModel;
 import com.example.pocketalert.configuration.*;
@@ -32,6 +33,11 @@ public class MainActivity extends ConnectedActivity {
 
     public static boolean vibrationEnabled = true;
     private UserViewModel userViewModel;
+
+    // Request codes
+    public static final int REGISTER_ACTIVITY_REQUEST_CODE = 69;
+    public static final int EDIT_DETAILS_ACTIVITY_REQUEST_CODE = 420;
+    public static final int VIEW_DETAILS_ACTIVITY_REQUEST_CODE = 42;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,33 +72,33 @@ public class MainActivity extends ConnectedActivity {
 
         // Results don't go in here anymore, but are sent in the callback of a request
 
-//        if (requestCode == REGISTER_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-//            // Adds a new user to the database
-//            String id = data.getStringExtra("id");
-//            if (id != null) {
-//                User user = new User(id);
-//                userViewModel.insert(user);
-//            }
-//        } else if (requestCode == VIEW_DETAILS_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-//            // Updates the users data
-//            String id = data.getStringExtra("id");
-//            User user = new User(Objects.requireNonNull(id));
-//            user.setName(Objects.requireNonNull(data.getStringExtra("name")));
-//            user.setAddress(Objects.requireNonNull(data.getStringExtra("address")));
-//            user.setPhone(Objects.requireNonNull(data.getStringExtra("phone")));
-//            user.setEmail(Objects.requireNonNull(data.getStringExtra("email")));
-//            user.setBirthday(Objects.requireNonNull(data.getStringExtra("birthday")));
-//            userViewModel.update(user);
-//
-//            //TODO: updating still occasionally takes longer resulting in the old info being show
-//            try {
-//                Thread.sleep(100);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//
-//            viewUser(id);
-//        }
+        if (requestCode == REGISTER_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            // Adds a new user to the database
+            String id = data.getStringExtra("id");
+            if (id != null) {
+                User user = new User(id);
+                userViewModel.insert(user);
+            }
+        } else if (requestCode == VIEW_DETAILS_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            // Updates the users data
+            String id = data.getStringExtra("id");
+            User user = new User(Objects.requireNonNull(id));
+            user.setName(Objects.requireNonNull(data.getStringExtra("name")));
+            user.setAddress(Objects.requireNonNull(data.getStringExtra("address")));
+            user.setPhone(Objects.requireNonNull(data.getStringExtra("phone")));
+            user.setEmail(Objects.requireNonNull(data.getStringExtra("email")));
+            user.setBirthday(Objects.requireNonNull(data.getStringExtra("birthday")));
+            userViewModel.update(user);
+
+            //TODO: updating still occasionally takes longer resulting in the old info being show
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            viewUser(id);
+        }
     }
 
     /**
@@ -131,8 +137,8 @@ public class MainActivity extends ConnectedActivity {
      * When the FAB with the plus is clicked, go to the RegisterActivity.
      */
     public void addDevice(View view) {
-//        Intent intent = new Intent(this, RegisterActivity.class);
-//        startActivityForResult(intent, REGISTER_ACTIVITY_REQUEST_CODE);
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivityForResult(intent, REGISTER_ACTIVITY_REQUEST_CODE);
     }
 
     /**
@@ -144,9 +150,9 @@ public class MainActivity extends ConnectedActivity {
     }
 
     public void viewUser(String id) {
-//        Intent intent = new Intent(this, DetailActivity.class);
-//        putExtrasDetails(intent, id);
-//        startActivityForResult(intent, VIEW_DETAILS_ACTIVITY_REQUEST_CODE);
+        Intent intent = new Intent(this, DetailActivity.class);
+        putExtrasDetails(intent, id);
+        startActivityForResult(intent, VIEW_DETAILS_ACTIVITY_REQUEST_CODE);
     }
 
     /**
@@ -195,7 +201,9 @@ public class MainActivity extends ConnectedActivity {
                 Intent historyIntent = new Intent(this,HistoryActivity.class);
                 startActivity(historyIntent);
                 break;
-            case R.id.itemThree:
+            case R.id.calendarSettings:
+                Intent reminderIntent = new Intent(this,ReminderActivity.class);
+                startActivity(reminderIntent);
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -216,7 +224,7 @@ public class MainActivity extends ConnectedActivity {
         SharedPreferences appSettingPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Set the dark mode according to the set mode
-        setDarkMode(appSettingPrefs.getBoolean("darkmode", true));
+        setDarkMode(appSettingPrefs.getBoolean("darkmode", false));
 
         setOrientationMode(Objects.requireNonNull(appSettingPrefs.getString("Orientation", "2")));
     }

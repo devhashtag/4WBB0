@@ -6,6 +6,8 @@
     <string name="vibrationSwitchPreference">Vibration of the device</string>
     <string name="rotationList">Rotation of the device</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_reminder">SettingsReminder</string>
+
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
@@ -13,7 +15,7 @@
     <string name="defaultRotationMode">2</string>
     <string name="settings">Settings</string>
     <string name="history">History</string>
-    <string name="itemThree">Item Three</string>
+    <string name="reminder">MedicineReminder</string>
 
 
     <!-- Messages Preferences -->
@@ -73,6 +75,16 @@
     <string name="user_notification_channel_name">Someone needs your help!</string>
     <string name="user_notification_channel_description">User has fallen!</string>
     <string name="intent_extra">extra_data_history</string>
+    <string name="user_foreground_running_title">Pocket Detector</string>
+    <string name="user_foreground_running_description">Pocket Detector is running on the background.</string>
+
+    <!--  String for Medicine reminder-->
+    <string name="hintEditTextMedicine">Edit the current date</string>
+    <string name="saveTextHint">Extra information for notification</string>
+    <string name="currentDateButton">Jump to current date</string>
+    <string name="buttonTextView">No time is currently set</string>
+    <string name="buttonTimePicker">Pick time</string>
+
 
 
     <!--  Other  -->

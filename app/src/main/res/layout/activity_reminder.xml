@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/mainBackground"
+    android:layout_height="match_parent">
+    <Button
+        android:id="@+id/currentDayButton"
+        android:gravity="center"
+        android:hint="@string/currentDateButton"
+        android:layout_width="match_parent"
+        android:textColor="@color/mainText"
+        android:layout_height="40dp"/>
+
+    <com.github.sundeepk.compactcalendarview.CompactCalendarView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/calendarView"
+        android:layout_width="wrap_content"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center"
+        android:theme="@style/themeMode"
+        android:dateTextAppearance="@style/CalenderViewDateCustomText"
+        android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"
+        app:compactCalendarTargetHeight="250dp"
+        app:compactCalendarTextSize="12sp"
+        app:compactCalendarBackgroundColor="@color/mainBackground"
+        app:compactCalendarTextColor="@color/mainText"
+        app:compactCalendarCurrentSelectedDayBackgroundColor="#2E8DE1"
+        app:compactCalendarCurrentDayBackgroundColor="#FFC107"
+        app:compactCalendarMultiEventIndicatorColor="#fff"
+        />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <LinearLayout
+            android:id="@+id/dayContent"
+            android:visibility="visible"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="400dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_height="60dp"
+                android:textSize="30sp"
+                android:textColor="@color/mainText"
+                android:hint="@string/buttonTimePicker"
+                android:id="@+id/ButtonSetTime"/>
+
+            <EditText
+                android:id="@+id/extraInfoPickTime"
+                android:maxLines="1"
+                android:inputType="text"
+                android:scrollHorizontally="true"
+                android:ellipsize="end"
+                android:layout_width="400dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_height="60dp"
+                android:textSize="25sp"
+                android:gravity="center"
+                android:textColor="@color/mainText"
+                android:textColorPrimary="@color/mainText"
+                android:hint="@string/saveTextHint"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

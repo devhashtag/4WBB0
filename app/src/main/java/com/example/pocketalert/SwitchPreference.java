@@ -21,11 +21,11 @@ public class SwitchPreference extends PreferenceFragmentCompat {
     SharedPreferences.OnSharedPreferenceChangeListener listener; // This is made to make a listener to the various ways to edit the settings
 
     // This will be called once the function is created
-
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         // Use the preferences in order to make a nice layout
         addPreferencesFromResource(R.xml.root_preferences);
+        getActivity().setTheme(R.style.themeMode);
         load_Settings();
     }
 
@@ -86,7 +86,6 @@ public class SwitchPreference extends PreferenceFragmentCompat {
             //
             setOrientationMode(appSettingPrefs.getString("Orientation", "2"));
 
-
             // Add a Listener for the values
             listener = (appSettingPrefs, key) -> {
                 Log.d("abcdefg", key);
@@ -99,7 +98,6 @@ public class SwitchPreference extends PreferenceFragmentCompat {
                         MainActivity.vibrationEnabled = appSettingPrefs.getBoolean(key, true);
                         break;
                     case "Orientation":
-                        Log.d("joehoe", String.valueOf(appSettingPrefs.getString(key, "2")));
                         setOrientationMode(appSettingPrefs.getString("Orientation", "2"));
                         break;
                 }
@@ -107,4 +105,5 @@ public class SwitchPreference extends PreferenceFragmentCompat {
             appSettingPrefs.registerOnSharedPreferenceChangeListener(listener);
         }
     }
+
 }
