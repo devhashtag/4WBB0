@@ -24,6 +24,7 @@ import android.widget.TimePicker;
 
 import com.example.pocketalert.configuration.Command;
 import com.example.pocketalert.connect.ConnectedActivity;
+import com.example.pocketalert.connect.Message;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
@@ -419,11 +420,13 @@ public class ReminderActivity extends ConnectedActivity implements  TimePickerDi
         currentYearArray.add(currentYear);
         currentHourArray.add(hourOfDay);
         currentMinuteArray.add(minute);
-        String id= UUID.randomUUID().toString();
         Calendar calID = Calendar.getInstance();
+        String id;
         calID.set(currentYear,currentMonth,currentDay,hourOfDay,minute);
-        sendRequest(Command.Request.SEND_MEDICINE_REMINDER, id +  calID.getTimeInMillis() , null);
-        notificationID.add(id);
+        sendRequest(Command.Request.SEND_MEDICINE_REMINDER, String.valueOf(calID.getTimeInMillis()), (Message response) -> {
+            notificationID.add(response.argument);
+        });
+
         // Add a linear layout which is horizontal
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
         LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
