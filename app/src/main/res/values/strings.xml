@@ -43,9 +43,9 @@
 
     <!--  Instructions  -->
     <string name="connect_device_instructions_1">Connecting a fall detector to this app allows you to get notified when the wearer of the fall detector falls or presses the emergency button.</string>
-    <string name="connect_device_instructions_2">To connect the device with the app you need to enter the fall detector\'s identification code into the text box below. You can obtain the ID code by ???holding down the false alarm button on the fall detector for 10 seconds. The speaker will then read out the ID code.???</string>
-    <string name="connect_device_instructions_3">When this number has been written down, press \"Connect\". You will see a new device has been added.</string>
-    <string name="connect_device_instructions_4">To add personal details of the wearer of the device, click on the newly added device and then on the pencil.</string>
+    <string name="connect_device_instructions_2">To connect the device with the app you need to enter the fall detector\'s identification code entered. This ID code is written on the front page of the instruction manual that came with the fall detector.</string>
+    <string name="connect_device_instructions_3">When this number has been entered in the text box on the registration page, press \"Connect\". You will see a new device has been added to the main page.</string>
+    <string name="connect_device_instructions_4">To add personal details of the wearer of the device, click on the newly added device and then click on the pencil.</string>
 
     <!--  TextView string  -->
     <string name="connect_new_device">Connect New Device</string>
