@@ -21,6 +21,7 @@ import java.util.Random;
 
 public class DetailActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    private static final int EDIT_DETAILS_ACTIVITY_REQUEST_CODE = 23;
     private String id, name, address, phone, email, birthday;
     private TextView idView, nameView, addressView, phoneView, emailView, birthdayView;
     private boolean wasDataUpdated = false;
@@ -135,9 +136,9 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
      * When the edit button is pressed, go to the EditDetailsActivity.
      */
     public void onEdit(View view) {
-//        Intent intent = new Intent(this, EditDetailsActivity.class);
-//        putExtrasDetails(intent);
-//        startActivityForResult(intent, EDIT_DETAILS_ACTIVITY_REQUEST_CODE);
+        Intent intent = new Intent(this, EditDetailsActivity.class);
+        putExtrasDetails(intent);
+        startActivityForResult(intent, EDIT_DETAILS_ACTIVITY_REQUEST_CODE);
     }
 
     /**

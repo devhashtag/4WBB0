@@ -1,6 +1,7 @@
 package com.example.pocketalert.database;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -60,5 +61,26 @@ class UserRepository {
         }
 
         return user[0];
+    }
+
+    List<String> getUserIDS() {
+        final ArrayList<String>[] userString = new ArrayList[1];
+        final boolean[] threadDone = {false};
+
+        UserRoomDatabase.databaseWriteExecutor.execute(() -> {
+            userString[0] = (ArrayList<String>) userDao.getAllId();
+            threadDone[0] = true;
+        });
+
+        // wait for thread above to finish
+        while (!threadDone[0]) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return userString[0];
     }
 }

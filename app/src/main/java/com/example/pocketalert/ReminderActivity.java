@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
 import android.app.Dialog;
@@ -15,18 +18,23 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.pocketalert.configuration.Command;
 import com.example.pocketalert.connect.ConnectedActivity;
 import com.example.pocketalert.connect.Message;
+import com.example.pocketalert.database.User;
+import com.example.pocketalert.database.UserViewModel;
+import com.example.pocketalert.databaseHistory.HistoryViewModel;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
+import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -40,8 +48,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 public class ReminderActivity extends ConnectedActivity implements  TimePickerDialog.OnTimeSetListener{
 
@@ -50,6 +58,7 @@ public class ReminderActivity extends ConnectedActivity implements  TimePickerDi
     private int currentDay = 0;
     private int tempIndex = -1;
     private LinearLayout linearLayout;
+    private UserViewModel userViewModel;
 
     final ArrayList<String> notificationID = new ArrayList<>();
     final ArrayList<String> calendarStrings = new ArrayList<>();
@@ -62,6 +71,13 @@ public class ReminderActivity extends ConnectedActivity implements  TimePickerDi
     final ArrayList<Event> eventArray = new ArrayList<>();
     final ArrayList<Button> buttonArray = new ArrayList<>();
     final ArrayList<LinearLayout> linearLayouts = new ArrayList<>();
+    final ArrayList<reminder> reminder = new ArrayList<>();
+
+    List<String> listDropdown = new ArrayList<String>();
+
+    private Spinner spinner;
+
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +87,21 @@ public class ReminderActivity extends ConnectedActivity implements  TimePickerDi
         final Button currentDateButton = findViewById(R.id.currentDayButton);
         final Button pickTime = findViewById(R.id.ButtonSetTime);
         final LinearLayout linearLayout = findViewById(R.id.dayContent);
+        final Spinner spinner = findViewById(R.id.dropdownID);
+        userViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(UserViewModel.class);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,userViewModel.getAllUsersID());
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        getInfo();
+        spinner.setAdapter(dataAdapter);
+        if(userViewModel.getAllUsersID().size() > 0){
+            findViewById(R.id.ll).setVisibility(View.VISIBLE);
+            findViewById(R.id.textView).setVisibility(View.INVISIBLE);
+            getInfo();
+        } else {
+            findViewById(R.id.ll).setVisibility(View.INVISIBLE);
+            findViewById(R.id.textView).setVisibility(View.VISIBLE);
+        }
+
         Calendar c = Calendar.getInstance();
         currentYear = c.get(Calendar.YEAR);
         currentMonth = c.get(Calendar.MONTH);
@@ -196,7 +225,6 @@ public class ReminderActivity extends ConnectedActivity implements  TimePickerDi
     }
 
     private void saveInfo(){
-        Log.d("hierzosave",calendarStrings.toString()+notificationID.toString());
         File file = new File(this.getFilesDir(),"saved");
         File minutesFile = new File(this.getFilesDir(),"minutes");
         File hoursFile = new File(this.getFilesDir(),"hours");
@@ -294,10 +322,7 @@ public class ReminderActivity extends ConnectedActivity implements  TimePickerDi
                 currentDayArray.add(readerDays.read());
                 currentMonthArray.add(readerMonths.read());
                 currentYearArray.add(readerYears.read());
-
-
             }
-            Log.d("hierzoread",calendarStrings.toString()+notificationID.toString());
             is.close();
             isMinutes.close();
             isHours.close();
@@ -356,8 +381,10 @@ public class ReminderActivity extends ConnectedActivity implements  TimePickerDi
                     buttonArray.remove(tempIndex);
                     eventArray.remove(tempIndex);
                     linearLayouts.remove(tempIndex);
+                    reminder.remove(tempIndex);
                 }
             });
+
             buttonArray.add(newButton);
             tempLinearLayout.addView(newButton);
             // Add the textview
@@ -377,6 +404,10 @@ public class ReminderActivity extends ConnectedActivity implements  TimePickerDi
             eventArray.add(ev2);
             // Increase the index
             linearLayouts.add(tempLinearLayout);
+            c.set(currentYearArray.get(i),currentMonthArray.get(i),currentDayArray.get(i),currentHourArray.get(i),currentMinuteArray.get(i));
+            String userID = spinner.getSelectedItem().toString();
+            reminder r = new reminder(userID,c.getTimeInMillis());
+            reminder.add(r);
         }
     }
 
@@ -420,12 +451,6 @@ public class ReminderActivity extends ConnectedActivity implements  TimePickerDi
         currentYearArray.add(currentYear);
         currentHourArray.add(hourOfDay);
         currentMinuteArray.add(minute);
-        Calendar calID = Calendar.getInstance();
-        String id;
-        calID.set(currentYear,currentMonth,currentDay,hourOfDay,minute);
-        sendRequest(Command.Request.SEND_MEDICINE_REMINDER, String.valueOf(calID.getTimeInMillis()), (Message response) -> {
-            notificationID.add(response.argument);
-        });
 
         // Add a linear layout which is horizontal
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
@@ -460,13 +485,31 @@ public class ReminderActivity extends ConnectedActivity implements  TimePickerDi
                 currentMinuteArray.remove(tempIndex);
                 currentTextViewArray.remove(tempIndex);
 
-                sendRequest(Command.Request.REMOVE_MEDICINE_REMINDER, notificationID.get(tempIndex), null);
+                sendRequest(Command.Request.REMOVE_MEDICINE_REMINDER, reminder.get(tempIndex).getDeviceID(), null);
+                reminder.remove(tempIndex);
                 // Send remove to server
                 notificationID.remove(tempIndex);
                 buttonArray.remove(tempIndex);
                 eventArray.remove(tempIndex);
                 linearLayouts.remove(tempIndex);
             }
+        });
+        Calendar calID = Calendar.getInstance();
+        calID.set(currentYear,currentMonth,currentDay,hourOfDay,minute);
+        spinner = findViewById(R.id.dropdownID);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        //String userID = spinner.getSelectedItem().toString();
+        String userID = preferences.getString("userID", null);
+
+        reminder r = new reminder(userID,calID.getTimeInMillis());
+        Gson gson = new Gson();
+        String jsonObject = gson.toJson(r);
+        reminder.add(r);
+
+        sendRequest(Command.Request.SEND_MEDICINE_REMINDER, jsonObject, (Message response) -> {
+            notificationID.add(response.argument);
+            Log.d("hierzo","sent"+response.argument);
+
         });
         buttonArray.add(newButton);
         tempLinearLayout.addView(newButton);
@@ -508,8 +551,6 @@ public class ReminderActivity extends ConnectedActivity implements  TimePickerDi
         }
 
         Collections.sort(tvArray);
-
-
         for(sortObject i : tvArray){
             linearLayout.addView(linearLayouts.get(i.thisIndex));
         }
@@ -553,5 +594,16 @@ public class ReminderActivity extends ConnectedActivity implements  TimePickerDi
                     '}';
         }
     }
+    public static class reminder{
+        public String deviceID;
+        public long millis;
+        public reminder(String devID, Long milliesconds){
+            this.deviceID = devID;
+            this.millis = milliesconds;
+        }
 
+        public String getDeviceID() {
+            return deviceID;
+        }
+    }
 }

@@ -257,7 +257,7 @@ public class ForegroundService extends Service {
             OkHttpClient httpClient = new OkHttpClient();
             Request request = new Request.Builder()
 //                    .url("ws://84.105.198.134:50007/websocket")
-                    .url("ws://192.168.2.55:5007/websocket")
+                    .url("ws://84.105.198.134:50007/websocket")
                     .build();
 
             MessageHandler handler = (@NotNull String text) -> {

@@ -25,6 +25,7 @@ import com.example.pocketalert.database.User;
 import com.example.pocketalert.database.UserViewModel;
 import com.example.pocketalert.configuration.*;
 
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends ConnectedActivity {
@@ -162,6 +163,7 @@ public class MainActivity extends ConnectedActivity {
      * @param id     The ID of the user who's details should be put in the intent's extras.
      */
     private void putExtrasDetails(@NonNull Intent intent, String id) {
+        Log.d("HIERZO","JOEJOEJOEOJE"+id);
         User user = userViewModel.getUser(id);
         intent.putExtra("id", id);
         intent.putExtra("name", user.getName());
