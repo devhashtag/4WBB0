@@ -18,19 +18,17 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pocketalert.configuration.Command;
 import com.example.pocketalert.connect.ConnectedActivity;
 import com.example.pocketalert.connect.Message;
 import com.example.pocketalert.connect.RegisterActivity;
 import com.example.pocketalert.database.User;
 import com.example.pocketalert.database.UserViewModel;
-import com.example.pocketalert.configuration.*;
 
-import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends ConnectedActivity {
     public static final String TAG = "MainActivity";
-    //TODO make activities landscape mode proof
 
     public static boolean vibrationEnabled = true;
     private UserViewModel userViewModel;
@@ -93,7 +91,6 @@ public class MainActivity extends ConnectedActivity {
             user.setBirthday(Objects.requireNonNull(data.getStringExtra("birthday")));
             userViewModel.update(user);
 
-            //TODO: updating still occasionally takes longer resulting in the old info being show
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
