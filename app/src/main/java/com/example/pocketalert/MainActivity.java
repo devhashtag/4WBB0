@@ -72,7 +72,7 @@ public class MainActivity extends ConnectedActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         // Results don't go in here anymore, but are sent in the callback of a request
-
+        Log.d("hierzo",String.valueOf(resultCode == RESULT_OK));
         if (requestCode == REGISTER_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             // Adds a new user to the database
             String id = data.getStringExtra("id");
@@ -82,6 +82,8 @@ public class MainActivity extends ConnectedActivity {
             }
         } else if (requestCode == VIEW_DETAILS_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             // Updates the users data
+            Log.d("hierzo","test2");
+
             String id = data.getStringExtra("id");
             User user = new User(Objects.requireNonNull(id));
             user.setName(Objects.requireNonNull(data.getStringExtra("name")));
@@ -151,6 +153,8 @@ public class MainActivity extends ConnectedActivity {
     }
 
     public void viewUser(String id) {
+        Log.d("hierzo","test3");
+
         Intent intent = new Intent(this, DetailActivity.class);
         putExtrasDetails(intent, id);
         startActivityForResult(intent, VIEW_DETAILS_ACTIVITY_REQUEST_CODE);
@@ -163,7 +167,7 @@ public class MainActivity extends ConnectedActivity {
      * @param id     The ID of the user who's details should be put in the intent's extras.
      */
     private void putExtrasDetails(@NonNull Intent intent, String id) {
-        Log.d("HIERZO","JOEJOEJOEOJE"+id);
+        Log.d("hierzo","test1");
         User user = userViewModel.getUser(id);
         intent.putExtra("id", id);
         intent.putExtra("name", user.getName());
