@@ -174,7 +174,7 @@ public class ForegroundService extends Service {
      */
     private void run() {
         ConnectionHandler handler = new ConnectionHandler((@NotNull Throwable t, @Nullable Response response) -> {
-            Log.e(TAG, "Error in websocket connection: " + t.getMessage());
+            Log.e(TAG, "Error in websocket connection: " + t.getMessage() + response);
 
             // Notify app of error
             Intent intent = new Intent(Command.ACTION);
@@ -215,11 +215,25 @@ public class ForegroundService extends Service {
             while (! messageQueue.isEmpty()) {
                 Message message = messageQueue.poll();
 
+                // Start alert
                 if (Command.Response.ALERT.toString().equals(message.command)) {
-                    // TODO: send extras
                     Log.d(TAG, "Received alert");
                     Intent intent = new Intent(this, DetailActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                    intent.putExtra("deviceId", message.argument);
+                    intent.putExtra("cancel", false);
+                    startActivity(intent);
+                    continue;
+                }
+
+                // Cancel alert
+                if (Command.Response.CANCEL_ALERT.toString().equals(message.command)) {
+                    Intent intent = new Intent(this, DetailActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                    intent.putExtra("deviceId", message.argument);
+                    intent.putExtra("cancel", true);
                     startActivity(intent);
                     continue;
                 }
@@ -258,6 +272,7 @@ public class ForegroundService extends Service {
             Request request = new Request.Builder()
 //                    .url("ws://84.105.198.134:50007/websocket")
                     .url("ws://192.168.2.55:5007/websocket")
+//                    .url("ws://192.168.2.11:50007/websocket")
                     .build();
 
             MessageHandler handler = (@NotNull String text) -> {
