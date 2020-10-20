@@ -405,6 +405,8 @@ public class ReminderActivity extends ConnectedActivity implements  TimePickerDi
             // Increase the index
             linearLayouts.add(tempLinearLayout);
             c.set(currentYearArray.get(i),currentMonthArray.get(i),currentDayArray.get(i),currentHourArray.get(i),currentMinuteArray.get(i));
+            spinner = findViewById(R.id.dropdownID);
+
             String userID = spinner.getSelectedItem().toString();
             reminder r = new reminder(userID,c.getTimeInMillis());
             reminder.add(r);
@@ -500,7 +502,7 @@ public class ReminderActivity extends ConnectedActivity implements  TimePickerDi
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         //String userID = spinner.getSelectedItem().toString();
         String userID = preferences.getString("userID", null);
-
+        userID = "9ebc2806-45e0-475d-908f-e7346cb13426";
         reminder r = new reminder(userID,calID.getTimeInMillis());
         Gson gson = new Gson();
         String jsonObject = gson.toJson(r);
@@ -508,8 +510,6 @@ public class ReminderActivity extends ConnectedActivity implements  TimePickerDi
 
         sendRequest(Command.Request.SEND_MEDICINE_REMINDER, jsonObject, (Message response) -> {
             notificationID.add(response.argument);
-            Log.d("hierzo","sent"+response.argument);
-
         });
         buttonArray.add(newButton);
         tempLinearLayout.addView(newButton);
@@ -595,15 +595,15 @@ public class ReminderActivity extends ConnectedActivity implements  TimePickerDi
         }
     }
     public static class reminder{
-        public String deviceID;
-        public long millis;
+        public String deviceId;
+        public long timestamp;
         public reminder(String devID, Long milliesconds){
-            this.deviceID = devID;
-            this.millis = milliesconds;
+            this.deviceId = devID;
+            this.timestamp = milliesconds;
         }
 
         public String getDeviceID() {
-            return deviceID;
+            return deviceId;
         }
     }
 }

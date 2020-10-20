@@ -102,19 +102,19 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // Results dont go in here
+         //Results dont go in here
 
-//        if (requestCode == EDIT_DETAILS_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-//            Bundle extras = data.getExtras();
-//            if (extras != null) {
-//                if (wasUpdated(extras)) {
-//                    assignValues(extras);
-//                    setTextViews();
-//                    wasDataUpdated = true;
-//                    sendReply();
-//                }
-//            }
-//        }
+        if (requestCode == EDIT_DETAILS_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            if (extras != null) {
+                if (wasUpdated(extras)) {
+                    assignValues(extras);
+                    setTextViews();
+                    wasDataUpdated = true;
+                    sendReply();
+                }
+            }
+        }
     }
 
     /**

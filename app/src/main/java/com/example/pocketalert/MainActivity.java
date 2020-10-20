@@ -18,19 +18,17 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pocketalert.configuration.Command;
 import com.example.pocketalert.connect.ConnectedActivity;
 import com.example.pocketalert.connect.Message;
 import com.example.pocketalert.connect.RegisterActivity;
 import com.example.pocketalert.database.User;
 import com.example.pocketalert.database.UserViewModel;
-import com.example.pocketalert.configuration.*;
 
-import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends ConnectedActivity {
     public static final String TAG = "MainActivity";
-    //TODO make activities landscape mode proof
 
     public static boolean vibrationEnabled = true;
     private UserViewModel userViewModel;
@@ -72,7 +70,7 @@ public class MainActivity extends ConnectedActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         // Results don't go in here anymore, but are sent in the callback of a request
-
+        Log.d("hierzo",String.valueOf(resultCode == RESULT_OK));
         if (requestCode == REGISTER_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             // Adds a new user to the database
             String id = data.getStringExtra("id");
@@ -82,6 +80,8 @@ public class MainActivity extends ConnectedActivity {
             }
         } else if (requestCode == VIEW_DETAILS_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             // Updates the users data
+            Log.d("hierzo","test2");
+
             String id = data.getStringExtra("id");
             User user = new User(Objects.requireNonNull(id));
             user.setName(Objects.requireNonNull(data.getStringExtra("name")));
@@ -91,7 +91,6 @@ public class MainActivity extends ConnectedActivity {
             user.setBirthday(Objects.requireNonNull(data.getStringExtra("birthday")));
             userViewModel.update(user);
 
-            //TODO: updating still occasionally takes longer resulting in the old info being show
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -151,6 +150,8 @@ public class MainActivity extends ConnectedActivity {
     }
 
     public void viewUser(String id) {
+        Log.d("hierzo","test3");
+
         Intent intent = new Intent(this, DetailActivity.class);
         putExtrasDetails(intent, id);
         startActivityForResult(intent, VIEW_DETAILS_ACTIVITY_REQUEST_CODE);
@@ -163,7 +164,7 @@ public class MainActivity extends ConnectedActivity {
      * @param id     The ID of the user who's details should be put in the intent's extras.
      */
     private void putExtrasDetails(@NonNull Intent intent, String id) {
-        Log.d("HIERZO","JOEJOEJOEOJE"+id);
+        Log.d("hierzo","test1");
         User user = userViewModel.getUser(id);
         intent.putExtra("id", id);
         intent.putExtra("name", user.getName());

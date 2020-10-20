@@ -50,27 +50,37 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <Button
+                        android:layout_width="100dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:layout_height="60dp"
+                        android:textSize="30sp"
+                        android:textColor="@color/mainText"
+                        android:hint="@string/buttonTimePicker"
+                        android:id="@+id/ButtonSetTime"/>
 
-                <Button
-                    android:layout_width="400dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:layout_height="60dp"
-                    android:textSize="30sp"
-                    android:textColor="@color/mainText"
-                    android:hint="@string/buttonTimePicker"
-                    android:id="@+id/ButtonSetTime"/>
+                    <Spinner
+                        android:id="@+id/dropdownID"
+                        android:textColor="@color/mainText"
+                        android:hint="@string/reminderId"
+                        android:theme="@style/themeMode"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:textColorPrimary="@color/mainText"
+                        android:layout_width="149dp"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"  />
+                </LinearLayout>
 
-                <Spinner
-                    android:id="@+id/dropdownID"
-                    android:textColor="@color/mainText"
-                    android:hint="@string/reminderId"
-                    android:layout_width="400dp"
-                    android:theme="@style/themeMode"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:layout_height="50dp"
-                    android:textColorPrimary="@color/mainText"/>
+
 
                 <EditText
                     android:id="@+id/extraInfoPickTime"

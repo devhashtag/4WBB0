@@ -23,7 +23,6 @@ public class RegisterInstructionsActivity extends AppCompatActivity {
         next = findViewById(R.id.nextInstructionButton);
         previous = findViewById(R.id.prevInstructionButton);
 
-        // TODO add more instruction. make them different steps.
         instructionIDs = new int[]{
                 R.string.connect_device_instructions_1,
                 R.string.connect_device_instructions_2,
