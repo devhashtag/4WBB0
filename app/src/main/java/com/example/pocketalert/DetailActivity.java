@@ -27,7 +27,6 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     private boolean wasDataUpdated = false;
     private double latitude, longitude;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
