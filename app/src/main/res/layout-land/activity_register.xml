@@ -33,7 +33,7 @@
         android:ems="10"
         android:hint="@string/identification_number"
         android:importantForAutofill="no"
-        android:inputType="number"
+        android:inputType="text"
         android:shadowColor="@color/textAlt"
         android:textColor="@color/mainText"
         android:textColorHint="@color/textAlt"
