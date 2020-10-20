@@ -10,5 +10,8 @@
 
     <color name="mainBackground">#2D313D</color>
 
+    <!-- Colors for the reminder -->
     <color name="generic_button">#808080</color>
+    <color name="red">#F44336</color>
+
 </resources>

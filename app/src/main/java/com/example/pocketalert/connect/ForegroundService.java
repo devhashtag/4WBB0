@@ -27,6 +27,7 @@ import okhttp3.*;
 
 import com.example.pocketalert.DetailActivity;
 import com.example.pocketalert.MainActivity;
+import com.example.pocketalert.R;
 import com.example.pocketalert.configuration.*;
 
 public class ForegroundService extends Service {
@@ -131,8 +132,13 @@ public class ForegroundService extends Service {
         isServiceStarted = false;
     }
 
-    @NonNull
-    private Notification createNotification() {
+    private void setNotification(Notification notification) {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(1, notification);
+    }
+
+    // Creates a channel if required
+    private void createChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
                     CHANNEL_ID,
@@ -147,6 +153,11 @@ public class ForegroundService extends Service {
             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    @NonNull
+    private Notification createNotification() {
+        createChannel();
 
         PendingIntent contentIntent = PendingIntent.getActivity(
                 getApplicationContext(),
@@ -163,8 +174,32 @@ public class ForegroundService extends Service {
                 .setContentTitle("Endless service")
                 .setContentText("This belongs to the PocketAlert app")
                 .setContentIntent(contentIntent)
-                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.drawable.ic_noti_icon)
                 .build();
+    }
+
+    @NonNull
+    // Notification to show when an alert is active
+    private Notification createAlertNotification(String deviceId) {
+        PendingIntent contentIntent = PendingIntent.getActivity(
+                getApplicationContext(),
+                0,
+                new Intent(getApplicationContext(), DetailActivity.class),
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
+        Notification.Builder builder = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                ? new Notification.Builder(this, CHANNEL_ID)
+                : new Notification.Builder(this);
+
+        Notification notification = builder
+                .setContentTitle("ALERT")
+                .setContentText("Stap in, oma is gevallen")
+                .setContentIntent(contentIntent)
+                .setSmallIcon(R.drawable.ic_noti_icon)
+                .build();
+
+        return notification;
     }
 
     /**
@@ -204,7 +239,6 @@ public class ForegroundService extends Service {
                     message.command = action;
                     message.argument = intent.getStringExtra("argument");
 
-
                     webSocket.send(message.toString());
                 } else {
                     Log.e(TAG, "Received intent that was not a request: " + action);
@@ -217,24 +251,22 @@ public class ForegroundService extends Service {
 
                 // Start alert
                 if (Command.Response.ALERT.toString().equals(message.command)) {
+                    // TODO: send extras
+                    setNotification(
+                        createAlertNotification(message.argument)
+                    );
                     Log.d(TAG, "Received alert");
-                    Intent intent = new Intent(this, DetailActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                    intent.putExtra("deviceId", message.argument);
-                    intent.putExtra("cancel", false);
-                    startActivity(intent);
                     continue;
                 }
 
-                // Cancel alert
                 if (Command.Response.CANCEL_ALERT.toString().equals(message.command)) {
-                    Intent intent = new Intent(this, DetailActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                    intent.putExtra("deviceId", message.argument);
-                    intent.putExtra("cancel", true);
-                    startActivity(intent);
+                    setNotification(
+                            createNotification()
+                    );
+                    Log.d(TAG, "Received cancel alert");
+//                    Intent intent = new Intent(this, DetailActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    startActivity(intent);
                     continue;
                 }
 
@@ -270,9 +302,7 @@ public class ForegroundService extends Service {
         public void run() {
             OkHttpClient httpClient = new OkHttpClient();
             Request request = new Request.Builder()
-//                    .url("ws://84.105.198.134:50007/websocket")
                     .url("ws://192.168.2.55:5007/websocket")
-//                    .url("ws://192.168.2.11:50007/websocket")
                     .build();
 
             MessageHandler handler = (@NotNull String text) -> {

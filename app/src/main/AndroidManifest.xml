@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.pocketalert">
 
@@ -23,6 +24,18 @@
             android:enabled="true"
             android:exported="true" />
 
+
+        <activity
+            android:name=".ReminderActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MainActivity">
+
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
         <activity
             android:name=".RegisterInstructionsActivity"
             android:parentActivityName=".connect.RegisterActivity" />
@@ -34,7 +47,6 @@
             android:name=".HistoryActivity"
             android:label="Previous sent messages"
             android:parentActivityName=".MainActivity">
-
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -53,7 +65,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".MainActivity">
+
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

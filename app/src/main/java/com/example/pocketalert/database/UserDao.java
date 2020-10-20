@@ -29,4 +29,7 @@ public interface UserDao {
 
     @Query("SELECT * FROM user_table WHERE id = :device_id")
     List<User> getUser(String device_id);
+
+    @Query("SELECT id FROM user_table")
+    List<String> getAllId();
 }

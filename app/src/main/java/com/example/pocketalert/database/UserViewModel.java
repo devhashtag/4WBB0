@@ -13,10 +13,15 @@ public class UserViewModel extends AndroidViewModel {
 
     private LiveData<List<User>> allUsers;
 
+    private List<String> allUsersID;
+
+
     public UserViewModel(Application application) {
         super(application);
         repository = new UserRepository(application);
         allUsers = repository.getAllUsers();
+        //allUsersID = repository.getAllUsersID();
+
     }
 
     /**
@@ -25,6 +30,8 @@ public class UserViewModel extends AndroidViewModel {
     public LiveData<List<User>> getAllUsers() {
         return allUsers;
     }
+
+    //public List<String> getAllUsersID() { return allUsersID; }
 
     /**
      * Adds a new User to the database.
@@ -45,6 +52,9 @@ public class UserViewModel extends AndroidViewModel {
         return repository.getUser(id).get(0);
     }
 
+    public List<String> getAllUsersID() {
+        return repository.getUserIDS();
+    }
     /**
      * Deletes the specified user from the database.
      *
@@ -78,4 +88,5 @@ public class UserViewModel extends AndroidViewModel {
     public void update(User user) {
         repository.update(user);
     }
+
 }

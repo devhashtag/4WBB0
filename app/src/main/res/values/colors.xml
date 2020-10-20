@@ -14,4 +14,8 @@
     <color name="red_button">#F44336</color>
     <color name="green_button">#4CAF50</color>
     <color name="generic_button">#D7D7D7</color>
+
+    <!-- Colors for the reminder -->
+    <color name="red">#F44336</color>
+
 </resources>

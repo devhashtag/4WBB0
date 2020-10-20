@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textColorPrimary="@color/mainText"
     android:background="@color/mainBackground">
-
-    <PreferenceCategory android:title="@string/messages_header">
-
-        <EditTextPreference
-            android:key="signature"
-            android:title="@string/your_information" />
-
-    </PreferenceCategory>
 
     <PreferenceCategory android:title="Enable Dark Mode">
 
@@ -20,7 +13,10 @@
             android:key="darkmode"
             android:defaultValue="false"
             android:text="@string/darkModeSwitchPreference"
-            android:title="@string/darkModeSwitchPreference" />
+            android:summaryOff="Dark mode is disabled"
+            android:summaryOn="Dark mode is enabled"
+            android:title="@string/darkModeSwitchPreference"
+            android:textColorPrimary="@color/mainText" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Screen Orientation">
@@ -30,7 +26,8 @@
             android:entryValues="@array/items_value"
             android:key="Orientation"
             android:defaultValue="2"
-            android:title="Orientation" />
+            android:title="Orientation"
+            android:textColorPrimary="@color/mainText"/>
 
     </PreferenceCategory>
 
@@ -45,7 +42,9 @@
             android:key="VibrationSwitchPreference"
             android:summaryOff="The device will not vibrate once an alert comes in"
             android:summaryOn="The device will vibrate once an alert comes in"
-            android:title="@string/vibrationSwitchPreference" />
+            android:textColor="@color/mainText"
+            android:title="@string/vibrationSwitchPreference"
+            android:textColorPrimary="@color/mainText"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
