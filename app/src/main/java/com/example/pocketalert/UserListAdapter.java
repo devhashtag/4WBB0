@@ -15,7 +15,6 @@ import com.example.pocketalert.database.User;
 import java.util.List;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserViewHolder> {
-
     private final LayoutInflater inflater;
     private List<User> users; // Cached copy of users
 

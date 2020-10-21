@@ -1,7 +1,6 @@
 package com.example.pocketalert.database;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 

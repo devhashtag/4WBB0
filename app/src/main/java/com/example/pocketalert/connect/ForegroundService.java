@@ -171,8 +171,8 @@ public class ForegroundService extends Service {
                 : new Notification.Builder(this);
 
         return builder
-                .setContentTitle("Endless service")
-                .setContentText("This belongs to the PocketAlert app")
+                .setContentTitle("Alert service")
+                .setContentText("Listens for alerts")
                 .setContentIntent(contentIntent)
                 .setSmallIcon(R.drawable.ic_noti_icon)
                 .build();
@@ -181,10 +181,13 @@ public class ForegroundService extends Service {
     @NonNull
     // Notification to show when an alert is active
     private Notification createAlertNotification(String deviceId) {
+        Intent detailIntent = new Intent(getApplicationContext(), DetailActivity.class);
+        detailIntent.putExtra("id", deviceId);
+
         PendingIntent contentIntent = PendingIntent.getActivity(
                 getApplicationContext(),
                 0,
-                new Intent(getApplicationContext(), DetailActivity.class),
+                detailIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
 
@@ -194,7 +197,7 @@ public class ForegroundService extends Service {
 
         Notification notification = builder
                 .setContentTitle("ALERT")
-                .setContentText("Stap in, oma is gevallen")
+                .setContentText("A fall is detected")
                 .setContentIntent(contentIntent)
                 .setSmallIcon(R.drawable.ic_noti_icon)
                 .build();
@@ -302,7 +305,8 @@ public class ForegroundService extends Service {
         public void run() {
             OkHttpClient httpClient = new OkHttpClient();
             Request request = new Request.Builder()
-                    .url("ws://192.168.2.55:5007/websocket")
+//                    .url("ws://192.168.2.55:5007/websocket")
+                    .url("ws://84.105.198.134:50007/websocket")
                     .build();
 
             MessageHandler handler = (@NotNull String text) -> {

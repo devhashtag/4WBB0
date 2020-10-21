@@ -38,10 +38,10 @@
 
         <activity
             android:name=".RegisterInstructionsActivity"
-            android:parentActivityName=".connect.RegisterActivity" />
+            android:parentActivityName=".RegisterActivity" />
         <activity android:name=".EditDetailsActivity" />
         <activity
-            android:name=".connect.RegisterActivity"
+            android:name=".RegisterActivity"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".HistoryActivity"

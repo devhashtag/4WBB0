@@ -8,35 +8,57 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.pocketalert.configuration.Command;
+import com.example.pocketalert.connect.ConnectedActivity;
+import com.example.pocketalert.connect.Message;
+import com.example.pocketalert.data.Device;
+import com.example.pocketalert.data.DeviceViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
+import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
 
-public class DetailActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class DetailActivity extends ConnectedActivity implements OnMapReadyCallback {
+    class Heartbeat {
+        int Id;
+        String DeviceId;
+        double Longitude;
+        // Made a type when creating the database
+        double Lattitue;
+        String Timestamp;
+    }
 
     private static final int EDIT_DETAILS_ACTIVITY_REQUEST_CODE = 23;
+    private static final String TAG = "DETAILACTIVITY";
     private String id, name, address, phone, email, birthday;
     private TextView idView, nameView, addressView, phoneView, emailView, birthdayView;
     private boolean wasDataUpdated = false;
     private double latitude, longitude;
+
+    private DeviceViewModel deviceViewModel;
+    private Device device;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            assignValues(bundle);
-        } else {
-            Log.e("DetailActivity", "No extras sent");
+        deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
+        String deviceId = getIntent().getStringExtra("id");
+
+        device = deviceViewModel.getDevice(deviceId);
+
+        if (device == null) {
+            Log.e(TAG, "No device with given id");
             finish();
         }
 
@@ -49,10 +71,23 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
             mapFragment.getMapAsync(this);
         }
 
-        // just so the location is different each time. replace with location of device.
-        Random random = new Random();
-        latitude = 51.844975 + random.nextDouble() - 0.5;
-        longitude = 4.927505 + random.nextDouble() - 0.5;
+        sendRequest(Command.Request.GET_DEVICE_LOCATION, deviceId, (Message response) -> {
+            if (! Command.Response.OK.toString().equals(response.command)) {
+                Log.e(TAG, "No device or heartbeat found for device");
+                return;
+            }
+
+            Gson gson = new Gson();
+
+            Heartbeat heartbeat = gson.fromJson(response.argument, Heartbeat.class);
+
+            latitude = heartbeat.Lattitue;
+            longitude = heartbeat.Longitude;
+
+            if (mapFragment != null) {
+                mapFragment.getMapAsync(this);
+            }
+        });
     }
 
     /**
@@ -60,14 +95,14 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
      *
      * @param bundle The Bundle of the extras that were sent with the new Intent.
      */
-    private void assignValues(@NonNull Bundle bundle) {
-        id = bundle.getString("id");
-        name = bundle.getString("name");
-        address = bundle.getString("address");
-        phone = bundle.getString("phone");
-        email = bundle.getString("email");
-        birthday = bundle.getString("birthday");
-    }
+//    private void assignValues(@NonNull Bundle bundle) {
+//        id = bundle.getString("id");
+//        name = bundle.getString("name");
+//        address = bundle.getString("address");
+//        phone = bundle.getString("phone");
+//        email = bundle.getString("email");
+//        birthday = bundle.getString("birthday");
+//    }
 
     /**
      * Finds the TextViews in this activity.
@@ -86,49 +121,11 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
      */
     private void setTextViews() {
         idView.setText(id);
-        nameView.setText(name.length() > 0 ? name : "Name");
-        addressView.setText(address.length() > 0 ? address : "Address");
-        phoneView.setText(phone.length() > 0 ? phone : "Phone");
-        emailView.setText(email.length() > 0 ? email : "Email");
-        birthdayView.setText(birthday.length() > 0 ? birthday : "Birthday");
-    }
-
-    /**
-     * When another Activity returns a result, this is where that result gets processed.
-     *
-     * @param requestCode The request code that was used when the activity was started.
-     * @param resultCode  The result code return by the activity.
-     * @param data        The Intent data the activity return.
-     */
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-         //Results dont go in here
-
-        if (requestCode == EDIT_DETAILS_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            if (extras != null) {
-                if (wasUpdated(extras)) {
-                    assignValues(extras);
-                    setTextViews();
-                    wasDataUpdated = true;
-                    sendReply();
-                }
-            }
-        }
-    }
-
-    /**
-     * Checks if the values have been updated in the edit activity. If not, this can be noted to prevent the app to run unnecessary code later on.
-     *
-     * @param bundle A bundle of extras.
-     * @return false if nothing has changed, true if one of the fields has been updated.
-     */
-    private boolean wasUpdated(@NonNull Bundle bundle) {
-        return !(Objects.equals(bundle.getString("name"), name) &&
-                Objects.equals(bundle.getString("address"), address) &&
-                Objects.equals(bundle.getString("phone"), phone) &&
-                Objects.equals(bundle.getString("email"), email) &&
-                Objects.equals(bundle.getString("birthday"), birthday));
+        nameView.setText(device.OwnerFirstName.length() > 0 ? device.OwnerFirstName : "Name");
+        addressView.setText(device.OwnerAddress.length() > 0 ? device.OwnerAddress : "Address");
+        birthdayView.setText(device.DateOfBirth.length() > 0 ? device.DateOfBirth : "Birthday");
+        phoneView.setText("0637684915");
+        emailView.setText("john@doe.com");
     }
 
     /**
@@ -136,38 +133,8 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
      */
     public void onEdit(View view) {
         Intent intent = new Intent(this, EditDetailsActivity.class);
-        putExtrasDetails(intent);
-        startActivityForResult(intent, EDIT_DETAILS_ACTIVITY_REQUEST_CODE);
-    }
-
-    /**
-     * Puts the updated user details in the provided intent.
-     *
-     * @param intent The intent to add the user's details to in the extras.
-     */
-    private void putExtrasDetails(@NonNull Intent intent) {
-        intent.putExtra("id", id);
-        intent.putExtra("name", name);
-        intent.putExtra("address", address);
-        intent.putExtra("phone", phone);
-        intent.putExtra("email", email);
-        intent.putExtra("birthday", birthday);
-    }
-
-    /**
-     * When the data has been edited, that info is sent to the main activity to be updated in the database.
-     */
-    private void sendReply() {
-        Intent replyIntent = new Intent();
-
-        if (wasDataUpdated) {
-            putExtrasDetails(replyIntent);
-            setResult(RESULT_OK, replyIntent);
-        } else {
-            setResult(RESULT_CANCELED, replyIntent);
-        }
-
-        finish();
+        intent.putExtra("id", device.Id);
+        startActivity(intent);
     }
 
     /**
@@ -175,10 +142,19 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.d(TAG, "onMapReady: " + longitude + "   " + latitude);
         googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(latitude, longitude))
                 .title(name));
         // Automatically zooms in on the marker
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        device = deviceViewModel.getDevice(device.Id);
+        setTextViews();
     }
 }
